@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: simpleBar(context, 'Register'),
+            appBar: barWithHelp(context, 'Register'),
             body: const CustomScrollView(slivers: [
               SliverFillRemaining(
                 hasScrollBody: false,
