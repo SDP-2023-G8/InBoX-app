@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:inbox_app/components/bars.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void initState() {
     super.initState();
@@ -26,13 +26,13 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: simpleBar(context, 'Login'),
+            appBar: barWithHelp(context, 'Register'),
             body: const CustomScrollView(slivers: [
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: Padding(
                   padding: EdgeInsets.all(20),
-                  child: Center(child: Text('login screen')),
+                  child: Center(child: Text('registration screen')),
                 ),
               )
             ])));
