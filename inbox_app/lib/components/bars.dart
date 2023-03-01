@@ -12,6 +12,7 @@ PreferredSizeWidget simpleBar(BuildContext context, String text) {
       onPressed: () => Navigator.of(context).pop(),
     ),
     title: Text(text),
+    titleTextStyle: const TextStyle(fontSize: 25),
     centerTitle: true,
   );
 }
@@ -38,7 +39,7 @@ PreferredSizeWidget barWithHelp(BuildContext context, String text) {
             color: Colors.white,
           ),
           onPressed: () {
-            // TODO: insert a pop-up with instructions for registration
+            // TODO: insert a pop-up with certain instructions (e.g. registration, usage, etc.)
           },
         )
       ]);
