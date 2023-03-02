@@ -23,11 +23,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             currentFocus.unfocus();
           }
         },
-        child: Scaffold(
+        child: const Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: barWithHelp(context, 'Register'),
-            body: const CustomScrollView(slivers: [
+            appBar: BarWithHelp('Register', 'How to Register?',
+                'Please use a valid email address.'),
+            body: CustomScrollView(slivers: [
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: Padding(

@@ -23,11 +23,11 @@ class _LoginScreenState extends State<LoginScreen> {
             currentFocus.unfocus();
           }
         },
-        child: Scaffold(
+        child: const Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: simpleBar(context, 'Login'),
-            body: const CustomScrollView(slivers: [
+            appBar: SimpleBar('Login'),
+            body: CustomScrollView(slivers: [
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: Padding(
