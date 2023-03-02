@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inbox_app/components/bars.dart';
+import 'package:inbox_app/pages/homepage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -23,16 +24,30 @@ class _LoginScreenState extends State<LoginScreen> {
             currentFocus.unfocus();
           }
         },
-        child: const Scaffold(
+        child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: SimpleBar('Login'),
+            appBar: const SimpleBarWithBackArrow('Login'),
             body: CustomScrollView(slivers: [
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: Padding(
                   padding: EdgeInsets.all(20),
-                  child: Center(child: Text('login screen')),
+                  child: Center(
+                      child: Column(
+                    children: [
+                      const Text('login screen'),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()),
+                            );
+                          },
+                          child: const Text('Login'))
+                    ],
+                  )),
                 ),
               )
             ])));

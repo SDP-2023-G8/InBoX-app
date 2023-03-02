@@ -8,8 +8,7 @@ import 'package:flutter/material.dart';
 class PopupHelpDialog extends StatelessWidget {
   final String titleText;
   final String helpText;
-  const PopupHelpDialog(this.titleText, this.helpText, {Key? key})
-      : super(key: key);
+  const PopupHelpDialog(this.titleText, this.helpText, {super.key});
 
   @override
   Widget build(BuildContext context) {

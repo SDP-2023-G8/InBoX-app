@@ -1,10 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:inbox_app/pages/login.dart';
+import '../pages/deliveries.dart';
+import '../pages/homepage.dart';
+import '../pages/settings.dart';
 import 'pop_ups.dart';
 
 class SimpleBar extends StatelessWidget implements PreferredSizeWidget {
   final String titleText;
   const SimpleBar(this.titleText, {Key? key}) : super(key: key);
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.deepPurple,
+      title: Text(titleText),
+      titleTextStyle: const TextStyle(fontSize: 25),
+      centerTitle: true,
+    );
+  }
+}
+
+class SimpleBarWithBackArrow extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String titleText;
+  const SimpleBarWithBackArrow(this.titleText, {Key? key}) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -76,58 +98,52 @@ class BarWithHelp extends StatelessWidget implements PreferredSizeWidget {
 class BottomBar extends StatelessWidget {
   // Page = 0 (deliveries); 1 (homepage); or 2 (settings).
   final int page;
-  const BottomBar(this.page, {Key? key}) : super(key: key);
+  const BottomBar(this.page, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.only(bottom: 55),
-        child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(children: [
-              IconButton(
-                icon: Icon(
-                  Icons.list,
-                  size: 40,
-                  color: page == 0
-                      ? const Color.fromARGB(255, 50, 5, 70)
-                      : const Color.fromARGB(255, 103, 58, 183),
-                  weight: page == 0 ? 2 : 1,
-                ),
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen())),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.home,
-                  size: 40,
-                  color: page == 1
-                      ? const Color.fromARGB(255, 50, 5, 70)
-                      : const Color.fromARGB(255, 103, 58, 183),
-                  weight: page == 1 ? 2 : 1,
-                ),
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen())),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.settings,
-                  size: 40,
-                  color: page == 2
-                      ? const Color.fromARGB(255, 50, 5, 70)
-                      : const Color.fromARGB(255, 103, 58, 183),
-                  weight: page == 2 ? 2 : 1,
-                ),
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen())),
-              )
-            ])));
+    return BottomAppBar(
+        notchMargin: 6,
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          IconButton(
+            icon: Icon(
+              Icons.list,
+              size: 40,
+              color: page == 0
+                  ? const Color.fromARGB(255, 50, 5, 70)
+                  : const Color.fromARGB(255, 170, 120, 255),
+            ),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DeliveriesScreen())),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.home,
+              size: 40,
+              color: page == 1
+                  ? const Color.fromARGB(255, 50, 5, 70)
+                  : const Color.fromARGB(255, 170, 120, 255),
+            ),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomeScreen())),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.settings,
+              size: 40,
+              color: page == 2
+                  ? const Color.fromARGB(255, 50, 5, 70)
+                  : const Color.fromARGB(255, 170, 120, 255),
+            ),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const SettingsScreen())),
+          )
+        ]));
   }
 }
 // TODO: Bottom bar with three icons (deliveries list, home, settings)
