@@ -80,7 +80,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                           ? 'attempt'
                                           : 'attempts';
                                       _errorText =
-                                          'Invalid code. You have $_attemptsLeft $att left.';
+                                          'Incorrect code. You have $_attemptsLeft $att left.';
                                     });
                                     if (_attemptsLeft == 0) {
                                       Navigator.of(context).pop();
