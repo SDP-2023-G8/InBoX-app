@@ -17,9 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+      onWillPop: () async => false,
       child: GestureDetector(
           onTap: () {
             FocusScopeNode currentFocus = FocusScope.of(context);

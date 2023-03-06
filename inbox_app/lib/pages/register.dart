@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inbox_app/components/bars.dart';
+import 'package:inbox_app/pages/verify_code.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -23,17 +24,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
             currentFocus.unfocus();
           }
         },
-        child: const Scaffold(
+        child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: BarWithHelp('Register', 'How to Register?',
+            appBar: const BarWithHelp('Register', 'How to Register?',
                 'Please use a valid email address.'),
             body: CustomScrollView(slivers: [
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Center(child: Text('registration screen')),
+                  padding: const EdgeInsets.all(20),
+                  child: Center(
+                      child: Column(
+                    children: [
+                      const Text('registration screen'),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const VerificationScreen(
+                                          'Register', 'example@gmail.com')),
+                            );
+                          },
+                          child: const Text('Register'))
+                    ],
+                  )),
                 ),
               )
             ])));

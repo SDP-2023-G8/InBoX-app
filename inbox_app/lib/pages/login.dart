@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Center(
                       child: Column(
                     children: [
