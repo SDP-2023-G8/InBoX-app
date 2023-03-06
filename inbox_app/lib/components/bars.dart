@@ -17,7 +17,7 @@ class SimpleBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       backgroundColor: Colors.deepPurple,
       title: Text(titleText),
-      titleTextStyle: const TextStyle(fontSize: 25),
+      titleTextStyle: const TextStyle(fontSize: 30, letterSpacing: 0.5),
       centerTitle: true,
     );
   }
@@ -44,7 +44,7 @@ class SimpleBarWithBackArrow extends StatelessWidget
         onPressed: () => Navigator.of(context).pop(),
       ),
       title: Text(titleText),
-      titleTextStyle: const TextStyle(fontSize: 25),
+      titleTextStyle: const TextStyle(fontSize: 30, letterSpacing: 0.5),
       centerTitle: true,
     );
   }
@@ -74,7 +74,7 @@ class BarWithHelp extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(titleText),
-        titleTextStyle: const TextStyle(fontSize: 25),
+        titleTextStyle: const TextStyle(fontSize: 30, letterSpacing: 0.5),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
