@@ -65,6 +65,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 autofocus: true,
                                 digitsOnly: true,
                                 onCompleted: (String value) {
+                                  // TODO: real verification
                                   if (value == "0808") {
                                     Navigator.push(
                                       context,
