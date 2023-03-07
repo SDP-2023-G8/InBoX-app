@@ -26,7 +26,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async => true,
+        onWillPop: () async => false,
         child: GestureDetector(
           onTap: () {
             FocusScopeNode currentFocus = FocusScope.of(context);
