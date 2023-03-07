@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Text(
                           _areDetailsCorrect
                               ? ''
-                              : 'Incorrect email or password.',
+                              : 'Incorrect email or password',
                           style: TextStyle(
                               fontSize: 17,
                               color: _areDetailsCorrect
