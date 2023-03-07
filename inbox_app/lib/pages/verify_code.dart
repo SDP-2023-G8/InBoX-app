@@ -26,7 +26,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async => true,
+        onWillPop: () async => false,
         child: GestureDetector(
           onTap: () {
             FocusScopeNode currentFocus = FocusScope.of(context);
@@ -65,6 +65,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 autofocus: true,
                                 digitsOnly: true,
                                 onCompleted: (String value) {
+                                  // TODO: real verification
                                   if (value == "0808") {
                                     Navigator.push(
                                       context,
@@ -80,7 +81,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                           ? 'attempt'
                                           : 'attempts';
                                       _errorText =
-                                          'Invalid code. You have $_attemptsLeft $att left.';
+                                          'Incorrect code. You have $_attemptsLeft $att left.';
                                     });
                                     if (_attemptsLeft == 0) {
                                       Navigator.of(context).pop();
