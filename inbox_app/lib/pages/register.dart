@@ -222,7 +222,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               fixedSize: const Size(120, 50),
-                              backgroundColor: Colors.deepPurple,
+                              backgroundColor:
+                                  (isEmailValid(_emailController.text) &&
+                                          isPasswordValid(
+                                              _passwordController.text) &&
+                                          _passwordsMatch)
+                                      ? Colors.deepPurple
+                                      : Colors.grey,
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(15)))),
