@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:inbox_app/components/bars.dart';
+import 'package:inbox_app/constants/constants.dart';
 import 'package:inbox_app/pages/verify_code.dart';
 
 import '../components/input_validation.dart';
@@ -232,10 +236,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(15)))),
-                          onPressed: () {
-                            if (isEmailValid(_emailController.text) &&
-                                isPasswordValid(_passwordController.text) &&
-                                _passwordsMatch) {
+                          onPressed: () async {
+                            var url = Uri.http(
+                                REST_ENDPOINT, '/api/v1/users/register');
+                            Map data = {
+                              "email": _emailController.text,
+                              "password": _passwordController.text
+                            };
+                            var response = await http.post(url,
+                                headers: {"Content-Type": "application/json"},
+                                body: json.encode(data));
+
+                            if (response.statusCode == 201 && context.mounted) {
+                              // Send email verification code
+                              var url = Uri.http(REST_ENDPOINT,
+                                  '/api/v1/users/${_emailController.text}/verification');
+                              http.get(url);
+
+                              // Save authentication token
+                              const storage = FlutterSecureStorage();
+                              storage.write(
+                                  key: "jwt",
+                                  value: json.decode(response.body)["token"]);
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

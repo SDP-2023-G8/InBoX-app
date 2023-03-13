@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
+import 'package:http/http.dart' as http;
 import 'package:inbox_app/components/bars.dart';
+import 'package:inbox_app/constants/constants.dart';
 import 'package:inbox_app/pages/homepage.dart';
 
 class VerificationScreen extends StatefulWidget {
@@ -64,9 +66,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 length: 4,
                                 autofocus: true,
                                 digitsOnly: true,
-                                onCompleted: (String value) {
-                                  // TODO: real verification
-                                  if (value == "0808") {
+                                onCompleted: (String value) async {
+                                  var url = Uri.http(REST_ENDPOINT,
+                                      '/api/v1/users/twofactor/${widget._emailAddress}/$value');
+                                  var response = await http.get(url);
+
+                                  if (response.statusCode == 201 &&
+                                      context.mounted) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(

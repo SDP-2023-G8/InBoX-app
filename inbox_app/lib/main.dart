@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:inbox_app/constants/constants.dart';
 import 'package:inbox_app/pages/login.dart';
 import 'package:inbox_app/pages/register.dart';
+import 'package:inbox_app/pages/homepage.dart';
 
 void main() {
   runApp(const MainApp());
@@ -18,8 +23,40 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class StartScreen extends StatelessWidget {
+class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
+
+  @override
+  State<StartScreen> createState() => _StartScreenState();
+}
+
+class _StartScreenState extends State<StartScreen> {
+  Future<void> keyValid() async {
+    const storage = FlutterSecureStorage();
+    String? token = await storage.read(key: "jwt");
+
+    try {
+      var url = Uri.http(REST_ENDPOINT, "/api/v1/users/login/$token");
+      var response = await http.get(url);
+
+      if (response.statusCode == 201 &&
+          json.decode(response.body)["result"] &&
+          context.mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
+    } on Exception catch (_) {
+      // if exception occurs, just continue with regular login
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    keyValid(); // Check if a key exists and whether it is valid
+  }
 
   @override
   Widget build(BuildContext context) {
