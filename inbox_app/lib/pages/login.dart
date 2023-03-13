@@ -1,5 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:inbox_app/components/bars.dart';
+import 'package:inbox_app/constants/constants.dart';
 import 'package:inbox_app/pages/homepage.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -117,10 +121,25 @@ class _LoginScreenState extends State<LoginScreen> {
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(15)))),
-                          onPressed: () {
-                            // TODO: real authentication
-                            if (_emailController.text == 'ddd@gmail.com' &&
-                                _passwordController.text == 'Abcd1234') {
+                          onPressed: () async {
+                            var url =
+                                Uri.http(REST_ENDPOINT, '/api/v1/users/login');
+                            Map data = {
+                              "email": _emailController.text,
+                              "password": _passwordController.text
+                            };
+                            var response = await http.post(url,
+                                headers: {"Content-Type": "application/json"},
+                                body: json.encode(data));
+
+                            if (response.statusCode == 201 && context.mounted) {
+                              // Save new token
+                              const storage = FlutterSecureStorage();
+                              print(json.decode(response.body)["token"]);
+                              storage.write(
+                                  key: "jwt",
+                                  value: json.decode(response.body)["token"]);
+
                               callSetStateDetailsCorrect(true);
                               Navigator.push(
                                 context,
