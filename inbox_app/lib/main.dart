@@ -1,13 +1,46 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:inbox_app/notification_service.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inbox_app/constants/constants.dart';
 import 'package:inbox_app/pages/login.dart';
 import 'package:inbox_app/pages/register.dart';
 import 'package:inbox_app/pages/homepage.dart';
 
-void main() {
+void main() async {
+  // Set up socket IO client
+  IO.Socket socket = IO.io('http://$REST_ENDPOINT', <String, dynamic>{
+    'autoConnect': false,
+    'transports': ['websocket'],
+  });
+
+  socket.connect();
+  socket.onConnect((_) {
+    socket.emit('connection', "Connected!");
+  });
+
+  // Initialize notification service
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().initializePlatformNotifications();
+
+  socket.on(
+      'delivery_complete',
+      (deliveryID) => NotificationService().showLocalNotification(
+          id: 0,
+          title: "Delivery Complete!",
+          body: "Deliver with id $deliveryID has been complete",
+          payload: "payload"));
+
+  socket.on(
+      'alarm',
+      (message) => NotificationService().showLocalNotification(
+          id: 1,
+          title: "ALARM IS SOUNDING!",
+          body: message,
+          payload: "payload"));
+
   runApp(const MainApp());
 }
 

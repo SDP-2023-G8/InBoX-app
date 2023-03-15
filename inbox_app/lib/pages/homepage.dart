@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_app/constants/constants.dart';
+import 'package:inbox_app/notification_service.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../components/bars.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,7 +40,44 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(20),
                     child: Center(
                         child: Column(
-                      children: const [Text('HOME PAGE')],
+                      children: [
+                        Text('HOME PAGE'),
+                        ElevatedButton(
+                          onPressed: () {
+                            NotificationService().showLocalNotification(
+                                id: 0,
+                                title: "test",
+                                body: "test body",
+                                payload: "payload");
+                          },
+                          child: const Text("Send Notification"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            IO.Socket socket = IO
+                                .io('http://$REST_ENDPOINT', <String, dynamic>{
+                              'autoConnect': false,
+                              'transports': ['websocket'],
+                            });
+
+                            socket.connect();
+                            socket.emit("isthisworking", "something");
+                          },
+                          child: const Text("Send Socket Message"),
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              IO.Socket socket = IO.io(
+                                  'http://$REST_ENDPOINT', <String, dynamic>{
+                                'autoConnect': false,
+                                'transports': ['websocket'],
+                              });
+
+                              socket.connect();
+                              socket.emit("unlock");
+                            },
+                            child: const Text("Unlock InBoX"))
+                      ],
                     )),
                   ),
                 )
