@@ -17,6 +17,7 @@ dependencies:
   timezone: ^0.9.1
   rxdart: ^0.27.7
   path_provider: ^2.0.13
+  local_auth: ^2.1.6
 
 
 dev_dependencies:
