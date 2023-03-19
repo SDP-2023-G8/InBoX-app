@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inbox_app/constants/constants.dart';
+import 'package:inbox_app/pages/live_video.dart';
 import 'package:inbox_app/notification_service.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../components/bars.dart';
@@ -41,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Center(
                         child: Column(
                       children: [
-                        Text('HOME PAGE'),
                         ElevatedButton(
                           onPressed: () {
                             NotificationService().showLocalNotification(
@@ -51,19 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 payload: "payload");
                           },
                           child: const Text("Send Notification"),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            IO.Socket socket = IO
-                                .io('http://$REST_ENDPOINT', <String, dynamic>{
-                              'autoConnect': false,
-                              'transports': ['websocket'],
-                            });
-
-                            socket.connect();
-                            socket.emit("isthisworking", "something");
-                          },
-                          child: const Text("Send Socket Message"),
                         ),
                         ElevatedButton(
                             onPressed: () {
@@ -76,7 +63,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               socket.connect();
                               socket.emit("unlock");
                             },
-                            child: const Text("Unlock InBoX"))
+                            child: const Text("Unlock InBoX")),
+                        ElevatedButton(
+                            onPressed: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const LiveVideoScreen()))
+                                },
+                            child: const Text("Connect to Video"))
                       ],
                     )),
                   ),
