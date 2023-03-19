@@ -96,7 +96,7 @@ class _LiveVideoScreenState extends State<LiveVideoScreen> {
       appBar: AppBar(
         title: const Text("Live Feed"),
         centerTitle: true,
-        backgroundColor: PRIMARY_GREEN,
+        backgroundColor: PRIMARY_BLACK,
       ),
       body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -118,17 +118,19 @@ class _LiveVideoScreenState extends State<LiveVideoScreen> {
                 }),
           )),
       floatingActionButton: FloatingActionButton(
-          backgroundColor: PRIMARY_GREEN,
+          backgroundColor: (_recordingAudio) ? PRIMARY_BLACK : PRIMARY_GREEN,
           onPressed: () {
-            // setState(() {
-            //   _recordingAudio = !_recordingAudio;
-            // });
+            setState(() {
+              _recordingAudio = !_recordingAudio;
+            });
 
-            // if (_recordingAudio) {
-            //   record();
-            // }
+            if (_recordingAudio) {
+              // record();
+            }
           },
-          child: const Icon(Icons.mic)),
+          child: (_recordingAudio)
+              ? const Icon(Icons.stop)
+              : const Icon(Icons.mic)),
     );
   }
 
