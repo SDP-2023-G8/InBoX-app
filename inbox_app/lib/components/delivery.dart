@@ -14,6 +14,7 @@ class _DeliveryState extends State<Delivery> {
   String unitId = "";
   String unitName = "";
   String compartmentId = "";
+  DateTime deliveryDate = DateTime(2023, 3, 22);
   int status = 0;
   //0 = un-initialised, 1 = initialised, 2 = assigned compartment, 3 = delivered
   bool isExpanded = false;
@@ -24,6 +25,7 @@ class _DeliveryState extends State<Delivery> {
   }
 
   // Function to get the delivery data from the REST API for a delivery object
+  // TODO: This function all also get the date of existing deliveries from the database
   void getDeliveryData() {
     setState(() {
       this.deliveryId = "1";
@@ -91,41 +93,54 @@ class _DeliveryState extends State<Delivery> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Row(
+                  child: Column(
                     children: [
-                      const Text('ID: '),
-                      Text(
-                        deliveryId,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const Spacer(),
-                      PopupMenuButton(
-                        icon: const Icon(Icons.more_vert),
-                        onSelected: (item) {
-                          switch (item) {
-                            case 'AssignCompartment':
-                              assignCompartment('1', '1', 'Original InBoX');
-                              //TODO: This should have separate functionality to assign a compartment when implemented with backend
-                              break;
-                            case 'EditOrder':
-                              //TODO Implement view/edit order popup
-                              break;
-                            default:
-                              throw Exception(
-                                  'The value passed to Popup Menu item in delivery ${deliveryId} was invalid');
-                          }
-                        },
-                        itemBuilder: (context) => <PopupMenuEntry>[
-                          const PopupMenuItem(
-                            value: 'AssignCompartment',
-                            child: Text('Assign Compartment'),
-                          ),
-                          const PopupMenuItem(
-                            value: 'EditOrder',
-                            child: Text('Edit Order Deatils'),
+                      Row(
+                        children: [
+                          const Text('ID: '),
+                          Text(
+                            deliveryId,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
+                      Row(
+                        children: [
+                          const Text('Delivery Date: '),
+                          Text(
+                            '${deliveryDate.day}-${deliveryDate.month}-${deliveryDate.year}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          const Spacer(),
+                          PopupMenuButton(
+                            icon: const Icon(Icons.more_vert),
+                            onSelected: (item) {
+                              switch (item) {
+                                case 'AssignCompartment':
+                                  assignCompartment('1', '1', 'Original InBoX');
+                                  //TODO: This should have separate functionality to assign a compartment when implemented with backend
+                                  break;
+                                case 'EditOrder':
+                                  //TODO Implement view/edit order popup
+                                  break;
+                                default:
+                                  throw Exception(
+                                      'The value passed to Popup Menu item in delivery ${deliveryId} was invalid');
+                              }
+                            },
+                            itemBuilder: (context) => <PopupMenuEntry>[
+                              const PopupMenuItem(
+                                value: 'AssignCompartment',
+                                child: Text('Assign Compartment'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'EditOrder',
+                                child: Text('Edit Order Deatils'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -250,6 +265,15 @@ class _DeliveryState extends State<Delivery> {
                           )
                         ],
                       ),
+                      Row(
+                        children: [
+                          const Text('Delivery Date: '),
+                          Text(
+                            '${deliveryDate.day}-${deliveryDate.month}-${deliveryDate.year}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -337,7 +361,11 @@ class _DeliveryState extends State<Delivery> {
                     ],
                   ),
                 ),
-                const Text('This Delivery has been collected'),
+                const Text('This Delivery was collected on '),
+                Text(
+                  '${deliveryDate.day}-${deliveryDate.month}-${deliveryDate.year}',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 const Divider(
                   color: Colors.deepPurple,
                   thickness: 1,
