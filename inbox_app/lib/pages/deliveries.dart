@@ -44,40 +44,18 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
           backgroundColor: Colors.white,
           appBar: const SimpleBar('Deliveries'),
           bottomNavigationBar: const BottomBar(0),
-          body: Column(
-            children: [
-              Row(
-                children: const [
-                  Text(
-                    'Delivery ID',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+          body: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: deliveries),
                   ),
-                  Text(
-                    'Unit ID',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'Compartment ID',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'Status',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              CustomScrollView(
-                slivers: [
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Center(
-                        child: Column(children: deliveries),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
@@ -85,8 +63,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
             onPressed: () {
               addDelivery(Delivery());
             }, //TODO: Implement Add deliveries screen popup
-            backgroundColor: const Color.fromARGB(
-                255, 170, 120, 255), //TODO: Add responsiveness
+            backgroundColor: const Color.fromARGB(255, 170, 120, 255),
             child: const Icon(Icons.add),
           ),
         ),
@@ -94,6 +71,3 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
     );
   }
 }
-
-//May Need moved to be a component
-
