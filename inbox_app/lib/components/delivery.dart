@@ -8,16 +8,16 @@ class Delivery extends StatefulWidget {
 }
 
 class _DeliveryState extends State<Delivery> {
-  String deliveryId = "";
-  String deliveryName = "";
-  String userId = "";
-  String unitId = "";
-  String unitName = "";
-  String compartmentId = "";
-  DateTime deliveryDate = DateTime(2023, 3, 22);
-  int status = 0;
+  String _deliveryId = "";
+  String _deliveryName = "";
+  String _userId = "";
+  String _unitId = "";
+  String _unitName = "";
+  String _compartmentId = "";
+  DateTime _deliveryDate = DateTime(2023, 3, 22);
+  int _status = 0;
   //0 = un-initialised, 1 = initialised, 2 = assigned compartment, 3 = delivered
-  bool isExpanded = false;
+  bool _isExpanded = false;
 
   @override
   void initState() {
@@ -28,27 +28,27 @@ class _DeliveryState extends State<Delivery> {
   // TODO: This function all also get the date of existing deliveries from the database
   void getDeliveryData() {
     setState(() {
-      this.deliveryId = "1";
-      this.deliveryName = "Name";
-      this.userId = "1";
-      this.status = 1;
+      this._deliveryId = "1";
+      this._deliveryName = "Name";
+      this._userId = "1";
+      this._status = 1;
     });
   }
 
   // Function assigns a compartment to the delivery
   void assignCompartment(String unitId, String compartmentId, String unitName) {
     setState(() {
-      this.unitId = unitId;
-      this.unitName = unitName;
-      this.compartmentId = compartmentId;
-      this.status = 2;
+      this._unitId = unitId;
+      this._unitName = unitName;
+      this._compartmentId = compartmentId;
+      this._status = 2;
     });
   }
 
   //Function marks a delivery as delivered
   void setDelivered() {
     setState(() {
-      this.status = 3;
+      this._status = 3;
     });
   }
 
@@ -57,23 +57,23 @@ class _DeliveryState extends State<Delivery> {
    * When expanded, the details of the devliery can be viewed
    */
   bool toggleIsExpanded() {
-    if (this.isExpanded) {
+    if (this._isExpanded) {
       setState(() {
-        this.isExpanded = false;
+        this._isExpanded = false;
       });
     } else {
       setState(() {
-        this.isExpanded = true;
+        this._isExpanded = true;
       });
     }
-    return this.isExpanded;
+    return this._isExpanded;
   }
 
   @override
   Widget build(BuildContext context) {
-    switch (status) {
+    switch (_status) {
       case 1:
-        if (isExpanded) {
+        if (_isExpanded) {
           return Padding(
             padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
             child: Column(
@@ -83,7 +83,7 @@ class _DeliveryState extends State<Delivery> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        deliveryName,
+                        _deliveryName,
                         style: const TextStyle(fontSize: 20),
                       ),
                       IconButton(
@@ -101,7 +101,7 @@ class _DeliveryState extends State<Delivery> {
                         children: [
                           const Text('ID: '),
                           Text(
-                            deliveryId,
+                            _deliveryId,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -110,7 +110,7 @@ class _DeliveryState extends State<Delivery> {
                         children: [
                           const Text('Delivery Date: '),
                           Text(
-                            '${deliveryDate.day}-${deliveryDate.month}-${deliveryDate.year}',
+                            '${_deliveryDate.day}-${_deliveryDate.month}-${_deliveryDate.year}',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
@@ -127,7 +127,7 @@ class _DeliveryState extends State<Delivery> {
                                   break;
                                 default:
                                   throw Exception(
-                                      'The value passed to Popup Menu item in delivery ${deliveryId} was invalid');
+                                      'The value passed to Popup Menu item in delivery ${_deliveryId} was invalid');
                               }
                             },
                             itemBuilder: (context) => <PopupMenuEntry>[
@@ -169,7 +169,7 @@ class _DeliveryState extends State<Delivery> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        deliveryName,
+                        _deliveryName,
                         style: const TextStyle(fontSize: 20),
                       ),
                       IconButton(
@@ -188,7 +188,7 @@ class _DeliveryState extends State<Delivery> {
           );
         }
       case 2:
-        if (isExpanded) {
+        if (_isExpanded) {
           return Padding(
             padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
             child: Column(
@@ -199,7 +199,7 @@ class _DeliveryState extends State<Delivery> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        deliveryName,
+                        _deliveryName,
                         style: const TextStyle(fontSize: 20),
                       ),
                       IconButton(
@@ -217,7 +217,7 @@ class _DeliveryState extends State<Delivery> {
                         children: [
                           const Text('ID: '),
                           Text(
-                            deliveryId,
+                            _deliveryId,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -226,7 +226,7 @@ class _DeliveryState extends State<Delivery> {
                         children: [
                           const Text('Unit: '),
                           Text(
-                            unitName,
+                            _unitName,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
@@ -245,7 +245,7 @@ class _DeliveryState extends State<Delivery> {
                                   break;
                                 default:
                                   throw Exception(
-                                      'The value passed to Popup Menu item in delivery ${deliveryId} was invalid');
+                                      'The value passed to Popup Menu item in delivery ${_deliveryId} was invalid');
                               }
                             },
                             itemBuilder: (context) => <PopupMenuEntry>[
@@ -268,7 +268,7 @@ class _DeliveryState extends State<Delivery> {
                         children: [
                           const Text('Compartment: '),
                           Text(
-                            compartmentId,
+                            _compartmentId,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           )
                         ],
@@ -277,7 +277,7 @@ class _DeliveryState extends State<Delivery> {
                         children: [
                           const Text('Delivery Date: '),
                           Text(
-                            '${deliveryDate.day}-${deliveryDate.month}-${deliveryDate.year}',
+                            '${_deliveryDate.day}-${_deliveryDate.month}-${_deliveryDate.year}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -303,7 +303,7 @@ class _DeliveryState extends State<Delivery> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        deliveryName,
+                        _deliveryName,
                         style: const TextStyle(fontSize: 20),
                       ),
                       IconButton(
@@ -322,7 +322,7 @@ class _DeliveryState extends State<Delivery> {
           );
         }
       case 3:
-        if (isExpanded) {
+        if (_isExpanded) {
           return Padding(
             padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
             child: Column(
@@ -333,7 +333,7 @@ class _DeliveryState extends State<Delivery> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        deliveryName,
+                        _deliveryName,
                         style: const TextStyle(fontSize: 20),
                       ),
                       IconButton(
@@ -349,7 +349,7 @@ class _DeliveryState extends State<Delivery> {
                     children: [
                       const Text('ID: '),
                       Text(
-                        deliveryId,
+                        _deliveryId,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
@@ -362,7 +362,7 @@ class _DeliveryState extends State<Delivery> {
                               break;
                             default:
                               throw Exception(
-                                  'The value passed to Popup Menu item in delivery ${deliveryId} was invalid');
+                                  'The value passed to Popup Menu item in delivery ${_deliveryId} was invalid');
                           }
                         },
                         itemBuilder: (context) => <PopupMenuEntry>[
@@ -377,7 +377,7 @@ class _DeliveryState extends State<Delivery> {
                 ),
                 const Text('This Delivery was collected on '),
                 Text(
-                  '${deliveryDate.day}-${deliveryDate.month}-${deliveryDate.year}',
+                  '${_deliveryDate.day}-${_deliveryDate.month}-${_deliveryDate.year}',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const Divider(
@@ -398,7 +398,7 @@ class _DeliveryState extends State<Delivery> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        deliveryName,
+                        _deliveryName,
                         style: const TextStyle(fontSize: 20),
                       ),
                       IconButton(

@@ -11,7 +11,7 @@ class DeliveriesScreen extends StatefulWidget {
 }
 
 class _DeliveriesScreenState extends State<DeliveriesScreen> {
-  var deliveries = <Delivery>[];
+  var _deliveries = <Delivery>[];
 
   @override
   void initState() {
@@ -20,7 +20,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
 
   void addDelivery(Delivery delivery) {
     setState(() {
-      deliveries.add(delivery);
+      _deliveries.add(delivery);
     });
   }
 
@@ -53,7 +53,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: deliveries),
+                        children: _deliveries),
                   ),
                 ),
               ),
