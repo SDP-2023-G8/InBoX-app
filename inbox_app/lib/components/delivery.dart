@@ -78,18 +78,20 @@ class _DeliveryState extends State<Delivery> {
             padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      deliveryName,
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                    IconButton(
-                      onPressed: toggleIsExpanded,
-                      icon: const Icon(Icons.expand_less),
-                    ),
-                  ],
+                GestureDetector(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        deliveryName,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      IconButton(
+                        onPressed: toggleIsExpanded,
+                        icon: const Icon(Icons.expand_less),
+                      ),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -161,18 +163,21 @@ class _DeliveryState extends State<Delivery> {
             padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      deliveryName,
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    IconButton(
-                      onPressed: toggleIsExpanded,
-                      icon: const Icon(Icons.expand_more),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: toggleIsExpanded,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        deliveryName,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      IconButton(
+                        onPressed: toggleIsExpanded,
+                        icon: const Icon(Icons.expand_more),
+                      ),
+                    ],
+                  ),
                 ),
                 const Divider(
                   thickness: 1,
@@ -188,18 +193,21 @@ class _DeliveryState extends State<Delivery> {
             padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      deliveryName,
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                    IconButton(
-                      onPressed: toggleIsExpanded,
-                      icon: const Icon(Icons.expand_less),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: toggleIsExpanded,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        deliveryName,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      IconButton(
+                        onPressed: toggleIsExpanded,
+                        icon: const Icon(Icons.expand_less),
+                      ),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -289,18 +297,21 @@ class _DeliveryState extends State<Delivery> {
             padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      deliveryName,
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    IconButton(
-                      onPressed: toggleIsExpanded,
-                      icon: const Icon(Icons.expand_more),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: toggleIsExpanded,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        deliveryName,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      IconButton(
+                        onPressed: toggleIsExpanded,
+                        icon: const Icon(Icons.expand_more),
+                      ),
+                    ],
+                  ),
                 ),
                 const Divider(
                   thickness: 1,
@@ -316,18 +327,21 @@ class _DeliveryState extends State<Delivery> {
             padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      deliveryName,
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                    IconButton(
-                      onPressed: toggleIsExpanded,
-                      icon: const Icon(Icons.expand_less),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: toggleIsExpanded,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        deliveryName,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      IconButton(
+                        onPressed: toggleIsExpanded,
+                        icon: const Icon(Icons.expand_less),
+                      ),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -378,18 +392,21 @@ class _DeliveryState extends State<Delivery> {
             padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      deliveryName,
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    IconButton(
-                      onPressed: toggleIsExpanded,
-                      icon: const Icon(Icons.expand_more),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: toggleIsExpanded,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        deliveryName,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      IconButton(
+                        onPressed: toggleIsExpanded,
+                        icon: const Icon(Icons.expand_more),
+                      ),
+                    ],
+                  ),
                 ),
                 const Divider(
                   thickness: 1,
