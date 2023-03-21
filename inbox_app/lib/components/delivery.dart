@@ -79,6 +79,8 @@ class _DeliveryState extends State<Delivery> {
             child: Column(
               children: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: toggleIsExpanded,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -164,6 +166,7 @@ class _DeliveryState extends State<Delivery> {
             child: Column(
               children: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: toggleIsExpanded,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -194,6 +197,7 @@ class _DeliveryState extends State<Delivery> {
             child: Column(
               children: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: toggleIsExpanded,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -298,6 +302,7 @@ class _DeliveryState extends State<Delivery> {
             child: Column(
               children: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: toggleIsExpanded,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -328,6 +333,7 @@ class _DeliveryState extends State<Delivery> {
             child: Column(
               children: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: toggleIsExpanded,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -393,6 +399,7 @@ class _DeliveryState extends State<Delivery> {
             child: Column(
               children: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: toggleIsExpanded,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
