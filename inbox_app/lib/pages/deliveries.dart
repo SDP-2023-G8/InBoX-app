@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../components/bars.dart';
+import '../components/delivery.dart';
 import 'homepage.dart';
 
 class DeliveriesScreen extends StatefulWidget {
@@ -10,9 +11,17 @@ class DeliveriesScreen extends StatefulWidget {
 }
 
 class _DeliveriesScreenState extends State<DeliveriesScreen> {
+  var _deliveries = <Delivery>[];
+
   @override
   void initState() {
     super.initState();
+  }
+
+  void addDelivery(Delivery delivery) {
+    setState(() {
+      _deliveries.add(delivery);
+    });
   }
 
   @override
@@ -24,31 +33,41 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
         return true;
       },
       child: GestureDetector(
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-          child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.white,
-              appBar: const SimpleBar('Deliveries'),
-              bottomNavigationBar: const BottomBar(0),
-              body: CustomScrollView(slivers: [
-                SliverFillRemaining(
-                  hasScrollBody: false,
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          appBar: const SimpleBar('Deliveries'),
+          bottomNavigationBar: const BottomBar(0),
+          body: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Center(
-                        child: Column(
-                      children: const [
-                        Text('You have no expected deliveries.')
-                      ],
-                    )),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: _deliveries),
                   ),
-                )
-              ]))),
+                ),
+              ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              addDelivery(Delivery());
+            }, //TODO: Implement Add deliveries screen popup
+            backgroundColor: const Color.fromARGB(255, 170, 120, 255),
+            child: const Icon(Icons.add),
+          ),
+        ),
+      ),
     );
   }
 }
