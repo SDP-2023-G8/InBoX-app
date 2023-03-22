@@ -111,44 +111,58 @@ class BottomBar extends StatelessWidget {
             Container(color: Colors.deepPurple, height: 2),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               IconButton(
-                icon: Icon(
-                  Icons.list,
-                  size: 40,
-                  color: page == 0
-                      ? const Color.fromARGB(255, 50, 5, 70)
-                      : const Color.fromARGB(255, 170, 120, 255),
-                ),
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const DeliveriesScreen())),
-              ),
+                  icon: Icon(
+                    Icons.list,
+                    size: 40,
+                    color: page == 0
+                        ? const Color.fromARGB(255, 50, 5, 70)
+                        : const Color.fromARGB(255, 170, 120, 255),
+                  ),
+                  onPressed: () => {
+                        if (page != 0)
+                          {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const DeliveriesScreen()))
+                          }
+                      }),
               IconButton(
-                icon: Icon(
-                  Icons.home,
-                  size: 40,
-                  color: page == 1
-                      ? const Color.fromARGB(255, 50, 5, 70)
-                      : const Color.fromARGB(255, 170, 120, 255),
-                ),
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const HomeScreen())),
-              ),
+                  icon: Icon(
+                    Icons.home,
+                    size: 40,
+                    color: page == 1
+                        ? const Color.fromARGB(255, 50, 5, 70)
+                        : const Color.fromARGB(255, 170, 120, 255),
+                  ),
+                  onPressed: () => {
+                        if (page != 1)
+                          {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomeScreen()))
+                          }
+                      }),
               IconButton(
-                icon: Icon(
-                  Icons.settings,
-                  size: 40,
-                  color: page == 2
-                      ? const Color.fromARGB(255, 50, 5, 70)
-                      : const Color.fromARGB(255, 170, 120, 255),
-                ),
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SettingsScreen())),
-              )
+                  icon: Icon(
+                    Icons.settings,
+                    size: 40,
+                    color: page == 2
+                        ? const Color.fromARGB(255, 50, 5, 70)
+                        : const Color.fromARGB(255, 170, 120, 255),
+                  ),
+                  onPressed: () => {
+                        if (page != 2)
+                          {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SettingsScreen()))
+                          }
+                      })
             ]),
           ],
         ));

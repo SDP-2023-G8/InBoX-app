@@ -105,11 +105,11 @@ class _StartScreenState extends State<StartScreen> {
                 children: [
                   const Text(
                     'Don\'t have an account yet?',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 17),
                   ),
                   TextButton(
                     style: TextButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 16),
+                      textStyle: const TextStyle(fontSize: 17),
                     ),
                     onPressed: () {
                       Navigator.push(

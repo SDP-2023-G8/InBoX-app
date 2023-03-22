@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_app/components/compartment.dart';
 import '../components/bars.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -9,9 +10,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final List<Compartment> _compartments = [];
   @override
   void initState() {
     super.initState();
+
+    // TODO: get states of the compartments from server
+    for (int i = 0; i < 4; i++) {
+      _compartments.add(const Compartment());
+    }
   }
 
   @override
@@ -30,18 +37,24 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: Colors.white,
               appBar: const SimpleBar('Your InBoX'),
               bottomNavigationBar: const BottomBar(1),
-              body: CustomScrollView(slivers: [
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Center(
-                        child: Column(
-                      children: const [Text('HOME PAGE')],
-                    )),
-                  ),
-                )
-              ]))),
+              body: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('HOME PAGE'),
+                    GridView.count(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        padding: const EdgeInsets.symmetric(vertical: 50),
+                        children: _compartments)
+                  ],
+                )),
+              ))),
     );
   }
 }
