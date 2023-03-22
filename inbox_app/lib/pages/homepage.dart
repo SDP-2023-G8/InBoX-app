@@ -35,8 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
-              appBar: const BarWithHelp(
-                  'Your InBoX', 'How to use InBoX app?', 'Description'),
+              appBar: const BarWithHelp('Your InBoX', 'How to use InBoX app?',
+                  'Description'), // TODO: add description
               bottomNavigationBar: const BottomBar(1),
               body: Padding(
                 padding: const EdgeInsets.all(20),
