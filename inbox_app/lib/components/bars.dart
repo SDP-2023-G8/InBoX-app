@@ -23,10 +23,9 @@ class SimpleBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-class SimpleBarWithBackArrow extends StatelessWidget
-    implements PreferredSizeWidget {
+class BarWithBackArrow extends StatelessWidget implements PreferredSizeWidget {
   final String titleText;
-  const SimpleBarWithBackArrow(this.titleText, {Key? key}) : super(key: key);
+  const BarWithBackArrow(this.titleText, {Key? key}) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -55,6 +54,46 @@ class BarWithHelp extends StatelessWidget implements PreferredSizeWidget {
   final String helpTitleText;
   final String helpText;
   const BarWithHelp(this.titleText, this.helpTitleText, this.helpText,
+      {Key? key})
+      : super(key: key);
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+        backgroundColor: Colors.deepPurple,
+        automaticallyImplyLeading: false,
+        title: Text(titleText),
+        titleTextStyle: const TextStyle(fontSize: 30, letterSpacing: 0.5),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.help_outline,
+              size: 40,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    PopupHelpDialog(helpTitleText, helpText),
+              );
+            },
+          )
+        ]);
+  }
+}
+
+class BarWithHelpAndBackArrow extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String titleText;
+  final String helpTitleText;
+  final String helpText;
+  const BarWithHelpAndBackArrow(
+      this.titleText, this.helpTitleText, this.helpText,
       {Key? key})
       : super(key: key);
 

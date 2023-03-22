@@ -16,8 +16,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     // TODO: get states of the compartments from server
-    for (int i = 0; i < 4; i++) {
-      _compartments.add(const Compartment());
+    for (int i = 1; i <= 4; i++) {
+      _compartments.add(Compartment(i));
     }
   }
 
@@ -35,7 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
-              appBar: const SimpleBar('Your InBoX'),
+              appBar: const BarWithHelp(
+                  'Your InBoX', 'How to use InBoX app?', 'Description'),
               bottomNavigationBar: const BottomBar(1),
               body: Padding(
                 padding: const EdgeInsets.all(20),
@@ -43,15 +44,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('HOME PAGE'),
-                    GridView.count(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        padding: const EdgeInsets.symmetric(vertical: 50),
-                        children: _compartments)
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          border: const Border(
+                              top: BorderSide(),
+                              bottom: BorderSide(),
+                              left: BorderSide(),
+                              right: BorderSide()),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: GridView.count(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 7,
+                          crossAxisSpacing: 7,
+                          children: _compartments),
+                    )
                   ],
                 )),
               ))),
