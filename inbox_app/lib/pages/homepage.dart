@@ -40,10 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
               bottomNavigationBar: const BottomBar(1),
               body: Padding(
                 padding: const EdgeInsets.all(20),
-                child: Center(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 20),
                     Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
@@ -58,12 +59,40 @@ class _HomeScreenState extends State<HomeScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           crossAxisCount: 2,
-                          mainAxisSpacing: 7,
-                          crossAxisSpacing: 7,
+                          mainAxisSpacing: 5,
+                          crossAxisSpacing: 5,
                           children: _compartments),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Compartment Status:',
+                            style: TextStyle(fontSize: 20)),
+                        Row(
+                          children: const [
+                            Icon(
+                              Icons.circle,
+                              color: Colors.red,
+                            ),
+                            Text(' Occupied', style: TextStyle(fontSize: 20)),
+                          ],
+                        ),
+                        Row(
+                          children: const [
+                            Icon(Icons.circle, color: Colors.yellow),
+                            Text('Reserved', style: TextStyle(fontSize: 20)),
+                          ],
+                        ),
+                        Row(
+                          children: const [
+                            Icon(Icons.circle, color: Colors.green),
+                            Text('Free', style: TextStyle(fontSize: 20)),
+                          ],
+                        ),
+                      ],
                     )
                   ],
-                )),
+                ),
               ))),
     );
   }
