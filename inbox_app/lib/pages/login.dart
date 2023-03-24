@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: const SimpleBarWithBackArrow('Login'),
+            appBar: const BarWithBackArrow('Login'),
             body: CustomScrollView(slivers: [
               SliverFillRemaining(
                 hasScrollBody: false,
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             labelStyle: const TextStyle(
                                 color: Colors.deepPurple, fontSize: 24),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            hintText: 'Create your password',
+                            hintText: 'Enter your password',
                             hintStyle: const TextStyle(
                                 fontSize: 18, color: Colors.grey),
                             focusedBorder: const OutlineInputBorder(
