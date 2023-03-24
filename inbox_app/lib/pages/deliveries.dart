@@ -65,7 +65,6 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
               showDialog(
                   context: context,
                   builder: (BuildContext context) => AddDelivery());
-            }, //TODO: Implement Add deliveries screen popup
             backgroundColor: const Color.fromARGB(255, 170, 120, 255),
             child: const Icon(Icons.add),
           ),
