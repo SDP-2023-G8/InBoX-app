@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.inbox_app">
-    <uses-permission android:name="android.Manifest.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permissions.USE_BIOMETRIC"/>
    <application
         android:label="inbox_app"

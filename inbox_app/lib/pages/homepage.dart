@@ -65,13 +65,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                             child: const Text("Unlock InBoX")),
                         ElevatedButton(
-                            onPressed: () => {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LiveVideoScreen()))
-                                },
+                            onPressed: () {
+                              IO.Socket socket = IO.io(
+                                  'http://$REST_ENDPOINT', <String, dynamic>{
+                                'autoConnect': false,
+                                'transports': ['websocket'],
+                              });
+
+                              socket.connect();
+                              socket.emit("startVideo");
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LiveVideoScreen()));
+                            },
                             child: const Text("Connect to Video"))
                       ],
                     )),
