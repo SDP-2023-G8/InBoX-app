@@ -18,7 +18,6 @@ dependencies:
   rxdart: ^0.27.7
   path_provider: ^2.0.13
   local_auth: ^2.1.6
-  flutter_sound: ^9.2.13
   permission_handler: ^10.2.0
   mic_stream: ^0.6.4
   flutter_mjpeg: ^2.0.3

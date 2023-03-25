@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:typed_data';
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:inbox_app/constants/constants.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter_mjpeg/flutter_mjpeg.dart';
+import 'package:mic_stream/mic_stream.dart';
 
 class StreamSocket {
   final _socketResponse = StreamController<String>();
@@ -30,6 +33,57 @@ class _LiveVideoScreenState extends State<LiveVideoScreen> {
     'transports': ['websocket'],
   });
 
+  Stream? _audioStream;
+  late StreamSubscription _listener;
+  bool _isRecording = false;
+
+  Future<bool> _startListening() async {
+    developer.log("START LISTENING", name: "inbox_app.recorder");
+
+    MicStream.shouldRequestPermission(true);
+
+    _audioStream = await MicStream.microphone(
+        audioSource: AudioSource.DEFAULT,
+        sampleRate: 48000, // 16000
+        channelConfig: ChannelConfig.CHANNEL_IN_MONO,
+        audioFormat: AudioFormat.ENCODING_PCM_16BIT);
+
+    _socket.emit("startAudio");
+
+    developer.log(
+        "Started listening to the microphone, sample rate is ${await MicStream.sampleRate}, bit depth is ${await MicStream.bitDepth}, bufferSize: ${await MicStream.bufferSize}",
+        name: "inbox_app.recorder");
+
+    int bytesPerSample = (await MicStream.bitDepth)! ~/ 8;
+    int samplesPerSecond = (await MicStream.sampleRate)!.toInt();
+
+    developer.log("Bytes per sample: $bytesPerSample",
+        name: "inbox_app.recorder");
+    developer.log("Samples per second: $samplesPerSecond",
+        name: "inbox_app.recorder");
+
+    setState(() => _isRecording = true);
+    _listener = _audioStream!.listen((data) {
+      _socket.emit("audioBuffer", Uint8List.fromList(data));
+    });
+
+    return true;
+  }
+
+  bool _stopListening() {
+    developer.log("Stop listening to the microphone",
+        name: "inbox_app.recorder");
+
+    _socket.emit("stopAudio");
+    _listener.cancel();
+
+    setState(() {
+      _isRecording = false;
+    });
+
+    return true;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +97,19 @@ class _LiveVideoScreenState extends State<LiveVideoScreen> {
           title: const Text("Live Feed"),
           centerTitle: true,
           backgroundColor: PRIMARY_BLACK,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            _isRecording = !_isRecording;
+
+            if (_isRecording) {
+              _startListening();
+            } else {
+              _stopListening();
+            }
+          },
+          backgroundColor: _isRecording ? PRIMARY_BLACK : PRIMARY_GREEN,
+          child: _isRecording ? const Icon(Icons.stop) : const Icon(Icons.mic),
         ),
         body: Padding(
             padding: const EdgeInsets.all(20.0),
