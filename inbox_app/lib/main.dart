@@ -1,14 +1,47 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:inbox_app/notification_service.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inbox_app/constants/constants.dart';
-import 'package:inbox_app/pages/deliveries.dart';
 import 'package:inbox_app/pages/login.dart';
 import 'package:inbox_app/pages/register.dart';
 import 'package:inbox_app/pages/homepage.dart';
 
-void main() {
+void main() async {
+  // Set up socket IO client
+  IO.Socket socket = IO.io('http://$REST_ENDPOINT', <String, dynamic>{
+    'autoConnect': false,
+    'transports': ['websocket'],
+  });
+
+  socket.connect();
+  socket.onConnect((_) {
+    socket.emit('connection', "Connected!");
+  });
+
+  // Initialize notification service
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().initializePlatformNotifications();
+
+  socket.on(
+      'delivery_complete',
+      (deliveryID) => NotificationService().showLocalNotification(
+          id: 0,
+          title: "Delivery Complete!",
+          body: "Deliver with id $deliveryID has been complete",
+          payload: "payload"));
+
+  socket.on(
+      'alarm',
+      (message) => NotificationService().showLocalNotification(
+          id: 1,
+          title: "ALARM IS SOUNDING!",
+          body: message,
+          payload: "payload"));
+
   runApp(const MainApp());
 }
 
@@ -17,9 +50,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DeliveriesScreen(),
+      home: const StartScreen(),
+      theme: ThemeData(
+          colorScheme:
+              ColorScheme.fromSwatch().copyWith(primary: PRIMARY_GREEN),
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+            backgroundColor: PRIMARY_GREEN,
+          )),
     );
   }
 }
@@ -32,6 +71,20 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
+  final LocalAuthentication auth = LocalAuthentication();
+
+  Future<void> authenticate() async {
+    final bool didAuthenticate = await auth.authenticate(
+      localizedReason: "Please authenticate to log in",
+      options: const AuthenticationOptions(useErrorDialogs: false),
+    );
+
+    if (didAuthenticate && context.mounted) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+    }
+  }
+
   Future<void> keyValid() async {
     const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "jwt");
@@ -43,10 +96,7 @@ class _StartScreenState extends State<StartScreen> {
       if (response.statusCode == 201 &&
           json.decode(response.body)["result"] &&
           context.mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
+        authenticate();
       }
     } on Exception catch (_) {
       // if exception occurs, just continue with regular login

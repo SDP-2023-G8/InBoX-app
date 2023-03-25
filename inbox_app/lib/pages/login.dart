@@ -135,7 +135,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (response.statusCode == 201 && context.mounted) {
                               // Save new token
                               const storage = FlutterSecureStorage();
-                              print(json.decode(response.body)["token"]);
                               storage.write(
                                   key: "jwt",
                                   value: json.decode(response.body)["token"]);

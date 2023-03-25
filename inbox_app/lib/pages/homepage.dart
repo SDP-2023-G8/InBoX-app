@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_app/constants/constants.dart';
+import 'package:inbox_app/pages/live_video.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:inbox_app/components/compartment.dart';
 import '../components/bars.dart';
 
@@ -10,10 +13,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final IO.Socket _socket = IO.io('http://$REST_ENDPOINT', <String, dynamic>{
+    'autoConnect': false,
+    'transports': ['websockets'],
+  });
+
   final List<Compartment> _compartments = [];
+
   @override
   void initState() {
     super.initState();
+
+    _socket.connect();
 
     // TODO: get states of the compartments from server
     for (int i = 1; i <= 4; i++) {
@@ -38,6 +49,15 @@ class _HomeScreenState extends State<HomeScreen> {
               appBar: const BarWithHelp('Your InBoX', 'How to use InBoX app?',
                   'Description'), // TODO: add description
               bottomNavigationBar: const BottomBar(1),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LiveVideoScreen()));
+                },
+                child: const Icon(Icons.camera),
+              ),
               body: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
