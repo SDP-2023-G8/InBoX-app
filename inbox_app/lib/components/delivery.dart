@@ -1,7 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_app/constants/constants.dart';
+
+enum Status { notInitialised, initialised, assigned, delivered }
+
+class DeliveryData {
+  final String deliveryID;
+  final String deliveryName;
+  final String userEmail;
+  final String hash;
+  final String deliveryDate;
+  final String imageProof;
+  final bool scanned;
+  final bool delivered;
+  final String url;
+
+  DeliveryData(
+      {required this.deliveryID,
+      required this.deliveryName,
+      required this.userEmail,
+      required this.hash,
+      required this.deliveryDate,
+      required this.imageProof,
+      required this.scanned,
+      required this.delivered,
+      required this.url});
+
+  factory DeliveryData.fromJson(Map<String, dynamic> json) {
+    return DeliveryData(
+        deliveryID: json["_id"]["\$oid"],
+        deliveryName: json["deliveryName"],
+        userEmail: json["email"],
+        hash: json["hashCode"],
+        deliveryDate: json["deliveryDate"],
+        imageProof: json["imageProof"],
+        scanned: json["scanned"],
+        delivered: json["delivered"],
+        url: json["url"]);
+  }
+}
 
 class Delivery extends StatefulWidget {
-  const Delivery({super.key});
+  const Delivery({
+    super.key,
+    required this.data,
+  });
+
+  final DeliveryData data;
 
   @override
   _DeliveryState createState() => _DeliveryState();
@@ -10,7 +54,6 @@ class Delivery extends StatefulWidget {
 class _DeliveryState extends State<Delivery> {
   String _deliveryId = "";
   String _deliveryName = "";
-  String _userId = "";
   String _unitId = "";
   String _unitName = "";
   String _compartmentId = "";
@@ -22,33 +65,36 @@ class _DeliveryState extends State<Delivery> {
   @override
   void initState() {
     super.initState();
+
+    _deliveryId = widget.data.deliveryID.substring(0, 5);
+    _deliveryName = widget.data.deliveryName;
+    _status = widget.data.delivered ? 3 : 2;
   }
 
   // Function to get the delivery data from the REST API for a delivery object
   // TODO: This function all also get the date of existing deliveries from the database
   void getDeliveryData() {
     setState(() {
-      this._deliveryId = "1";
-      this._deliveryName = "Name";
-      this._userId = "1";
-      this._status = 1;
+      _deliveryId = "1";
+      _deliveryName = "Name";
+      _status = 1;
     });
   }
 
   // Function assigns a compartment to the delivery
   void assignCompartment(String unitId, String compartmentId, String unitName) {
     setState(() {
-      this._unitId = unitId;
-      this._unitName = unitName;
-      this._compartmentId = compartmentId;
-      this._status = 2;
+      _unitId = unitId;
+      _unitName = unitName;
+      _compartmentId = compartmentId;
+      _status = 2;
     });
   }
 
-  //Function marks a delivery as delivered
+  // Function marks a delivery as delivered
   void setDelivered() {
     setState(() {
-      this._status = 3;
+      _status = 3;
     });
   }
 
@@ -57,16 +103,16 @@ class _DeliveryState extends State<Delivery> {
    * When expanded, the details of the devliery can be viewed
    */
   bool toggleIsExpanded() {
-    if (this._isExpanded) {
+    if (_isExpanded) {
       setState(() {
-        this._isExpanded = false;
+        _isExpanded = false;
       });
     } else {
       setState(() {
-        this._isExpanded = true;
+        _isExpanded = true;
       });
     }
-    return this._isExpanded;
+    return _isExpanded;
   }
 
   @override
@@ -113,7 +159,7 @@ class _DeliveryState extends State<Delivery> {
                           const Text('Delivery Date: '),
                           Text(
                             '${_deliveryDate.day}-${_deliveryDate.month}-${_deliveryDate.year}',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                           PopupMenuButton(
@@ -154,7 +200,7 @@ class _DeliveryState extends State<Delivery> {
                       'This Delivery has not been assigned a unit or compartment'),
                 ),
                 const Divider(
-                  color: Colors.deepPurple,
+                  color: PRIMARY_BLACK,
                   thickness: 1,
                 ),
               ],
@@ -184,7 +230,7 @@ class _DeliveryState extends State<Delivery> {
                 ),
                 const Divider(
                   thickness: 1,
-                  color: Colors.deepPurple,
+                  color: PRIMARY_BLACK,
                 ),
               ],
             ),
@@ -290,7 +336,7 @@ class _DeliveryState extends State<Delivery> {
                   ),
                 ),
                 const Divider(
-                  color: Colors.deepPurple,
+                  color: PRIMARY_GREEN,
                   thickness: 1,
                 ),
               ],
@@ -320,7 +366,7 @@ class _DeliveryState extends State<Delivery> {
                 ),
                 const Divider(
                   thickness: 1,
-                  color: Colors.deepPurple,
+                  color: PRIMARY_GREEN,
                 ),
               ],
             ),
@@ -384,7 +430,7 @@ class _DeliveryState extends State<Delivery> {
                 const Text('This Delivery was collected on '),
                 Text(
                   '${_deliveryDate.day}-${_deliveryDate.month}-${_deliveryDate.year}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const Divider(
                   color: Colors.deepPurple,

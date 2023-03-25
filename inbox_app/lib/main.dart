@@ -31,7 +31,7 @@ void main() async {
       (deliveryID) => NotificationService().showLocalNotification(
           id: 0,
           title: "Delivery Complete!",
-          body: "Deliver with id $deliveryID has been complete",
+          body: "Delivery with id $deliveryID has been complete!",
           payload: "payload"));
 
   socket.on(
