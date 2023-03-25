@@ -138,7 +138,12 @@ class _VerifyWithPasswordScreenState extends State<VerifyWithPasswordDialog> {
               )),
           onChanged: (_) => callSetStateDetailsCorrect(true),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 5),
+        Text(_areDetailsCorrect ? '' : 'Incorrect password',
+            style: TextStyle(
+                fontSize: 17,
+                color: _areDetailsCorrect ? Colors.green : Colors.red)),
+        const SizedBox(height: 20),
         ElevatedButton(
             onPressed: () {
               // TODO: verify email and (de)activate
