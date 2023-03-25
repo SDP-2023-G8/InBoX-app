@@ -37,9 +37,9 @@ class PopupHelpDialog extends StatelessWidget {
 }
 
 class DeleteAccountDialog extends StatelessWidget {
-  final String titleText;
-  final String dialogText;
-  const DeleteAccountDialog(this.titleText, this.dialogText, {super.key});
+  final String titleText = 'Delete Account';
+  final String dialogText = 'Are you sure you want to delete your account?';
+  const DeleteAccountDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +70,83 @@ class DeleteAccountDialog extends StatelessWidget {
             child: const Text(
               'Cancel',
               style: TextStyle(color: Colors.white),
+            ))
+      ],
+    );
+  }
+}
+
+class VerifyWithPasswordDialog extends StatefulWidget {
+  final String titleText;
+  final String dialogText = 'Please verify this action with your password.';
+  const VerifyWithPasswordDialog(this.titleText, {super.key});
+
+  @override
+  _VerifyWithPasswordScreenState createState() =>
+      _VerifyWithPasswordScreenState();
+}
+
+class _VerifyWithPasswordScreenState extends State<VerifyWithPasswordDialog> {
+  final _passwordController = TextEditingController();
+  bool _isObscure = true;
+  bool _areDetailsCorrect = true;
+
+  @override
+  Widget build(BuildContext context) {
+    void callSetStateObscure() {
+      setState(() {
+        _isObscure = !_isObscure;
+      });
+    }
+
+    void callSetStateDetailsCorrect(bool areDetailsCorrect) {
+      setState(() {
+        _areDetailsCorrect = areDetailsCorrect;
+      });
+    }
+
+    return AlertDialog(
+      title: Text(widget.titleText),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(widget.dialogText),
+        ],
+      ),
+      actions: <Widget>[
+        TextFormField(
+          controller: _passwordController,
+          obscureText: _isObscure,
+          cursorColor: Colors.deepPurple,
+          style: const TextStyle(fontSize: 18),
+          decoration: InputDecoration(
+              labelText: 'Password',
+              labelStyle:
+                  const TextStyle(color: Colors.deepPurple, fontSize: 24),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintText: 'Enter your password',
+              hintStyle: const TextStyle(fontSize: 18, color: Colors.grey),
+              focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.deepPurple)),
+              border: const OutlineInputBorder(),
+              suffixIcon: IconButton(
+                color: Colors.deepPurple,
+                icon:
+                    Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
+                onPressed: () => callSetStateObscure(),
+              )),
+          onChanged: (_) => callSetStateDetailsCorrect(true),
+        ),
+        const SizedBox(height: 10),
+        ElevatedButton(
+            onPressed: () {
+              // TODO: verify email and (de)activate
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+            child: Text(
+              widget.titleText,
+              style: const TextStyle(color: Colors.white, fontSize: 17),
             ))
       ],
     );

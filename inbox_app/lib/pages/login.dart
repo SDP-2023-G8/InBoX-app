@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:inbox_app/components/bars.dart';
 import 'package:inbox_app/constants/constants.dart';
+import 'package:inbox_app/pages/forgot_password.dart';
 import 'package:inbox_app/pages/homepage.dart';
 
 class LoginScreen extends StatefulWidget {

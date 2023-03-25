@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_app/main.dart';
 import 'package:inbox_app/pages/forgot_password.dart';
 import 'package:inbox_app/pages/homepage.dart';
 import '../components/bars.dart';
@@ -137,9 +138,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               const TextStyle(fontSize: 17),
                                         ),
                                         onPressed: () {
-                                          setState(() {
-                                            _unitStatus = !_unitStatus;
-                                          });
+                                          bool passwordCorrect = false;
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  VerifyWithPasswordDialog(
+                                                      _unitStatus
+                                                          ? 'Deactivate'
+                                                          : 'Activate'));
+                                          if (false)
+                                            passwordCorrect =
+                                                true; // TODO: check password and update passwordCorrect
+                                          if (passwordCorrect)
+                                            setState(() {
+                                              _unitStatus = !_unitStatus;
+                                            });
                                           // TODO: (de)activate the unit
                                         },
                                         child: Text(
@@ -193,9 +206,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) =>
-                                        const DeleteAccountDialog(
-                                            'Delete Account',
-                                            'Are you sure you want to delete your account?'));
+                                        const DeleteAccountDialog());
                               },
                               child: const Text(
                                 'Delete Account',
@@ -218,6 +229,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         BorderRadius.all(Radius.circular(15)))),
                             onPressed: () {
                               // TODO: log the user out
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const StartScreen()),
+                              );
                             },
                             child: const Text(
                               'Logout',

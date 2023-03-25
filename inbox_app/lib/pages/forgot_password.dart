@@ -76,7 +76,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: const BarWithHelp(
+            appBar: const BarWithHelpAndBackArrow(
                 'Change Password',
                 'How to Change your Password',
                 'Please use the email address you used to register.\n'
