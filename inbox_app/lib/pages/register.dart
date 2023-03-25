@@ -76,7 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: const BarWithHelp(
+            appBar: const BarWithHelpAndBackArrow(
                 'Register',
                 'How to Register?',
                 'Please use a valid email address.\n'

@@ -6,6 +6,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inbox_app/constants/constants.dart';
+import 'package:inbox_app/pages/deliveries.dart';
 import 'package:inbox_app/pages/login.dart';
 import 'package:inbox_app/pages/register.dart';
 import 'package:inbox_app/pages/homepage.dart';
@@ -156,11 +157,11 @@ class _StartScreenState extends State<StartScreen> {
                 children: [
                   const Text(
                     'Don\'t have an account yet?',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 17),
                   ),
                   TextButton(
                     style: TextButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 16),
+                      textStyle: const TextStyle(fontSize: 17),
                     ),
                     onPressed: () {
                       Navigator.push(
