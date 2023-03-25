@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'input_validation.dart';
 // TODO: view/change delivery pop-up widget
 
 // TODO: help pop-ups with different instructions, such as:
@@ -143,6 +145,80 @@ class _VerifyWithPasswordScreenState extends State<VerifyWithPasswordDialog> {
             style: TextStyle(
                 fontSize: 17,
                 color: _areDetailsCorrect ? Colors.green : Colors.red)),
+        const SizedBox(height: 20),
+        ElevatedButton(
+            onPressed: () {
+              // TODO: verify email and (de)activate
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+            child: Text(
+              widget.titleText,
+              style: const TextStyle(color: Colors.white, fontSize: 17),
+            ))
+      ],
+    );
+  }
+}
+
+class ChangeEmailDialog extends StatefulWidget {
+  final String titleText = 'Change Email Address';
+  final String dialogText = 'Please enter a new valid email address.';
+  const ChangeEmailDialog({super.key});
+
+  @override
+  _ChangeEmailScreenState createState() => _ChangeEmailScreenState();
+}
+
+class _ChangeEmailScreenState extends State<ChangeEmailDialog> {
+  final _emailController = TextEditingController();
+  bool _isEmailValid = false;
+
+  bool _areDetailsCorrect = true;
+
+  @override
+  Widget build(BuildContext context) {
+    void callSetStateEmail() {
+      setState(() {
+        _isEmailValid = isEmailValid(_emailController.text);
+      });
+    }
+
+    return AlertDialog(
+      title: Text(widget.titleText),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(widget.dialogText),
+        ],
+      ),
+      actions: <Widget>[
+        TextFormField(
+          controller: _emailController,
+          cursorColor: Colors.deepPurple,
+          style: const TextStyle(fontSize: 18),
+          decoration: const InputDecoration(
+            labelText: 'Email',
+            labelStyle: TextStyle(color: Colors.deepPurple, fontSize: 24),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: 'Enter your new email',
+            hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurple)),
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (value) => callSetStateEmail(),
+        ),
+        const SizedBox(height: 5),
+        Text(
+            (_isEmailValid || _emailController.text.isEmpty)
+                ? ''
+                : 'Invalid email address',
+            style: TextStyle(
+                fontSize: 17,
+                color: (_isEmailValid || _emailController.text.isEmpty)
+                    ? Colors.green
+                    : Colors.red)),
         const SizedBox(height: 20),
         ElevatedButton(
             onPressed: () {

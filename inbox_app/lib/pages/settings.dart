@@ -73,12 +73,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                   const TextStyle(fontSize: 17),
                                             ),
                                             onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const RegisterScreen()),
-                                              );
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      const ChangeEmailDialog());
                                             },
                                             child: const Text(
                                               'Change',
