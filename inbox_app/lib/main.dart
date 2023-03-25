@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inbox_app/constants/constants.dart';
+import 'package:inbox_app/pages/deliveries.dart';
 import 'package:inbox_app/pages/login.dart';
 import 'package:inbox_app/pages/register.dart';
 import 'package:inbox_app/pages/homepage.dart';
@@ -18,7 +19,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: StartScreen(),
+      home: DeliveriesScreen(),
     );
   }
 }

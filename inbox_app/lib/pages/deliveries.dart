@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_app/components/add_delivery.dart';
 import '../components/bars.dart';
 import '../components/delivery.dart';
 import 'homepage.dart';
@@ -61,8 +62,10 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              addDelivery(Delivery());
-            }, //TODO: Implement Add deliveries screen popup
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AddDelivery());
+            },
             backgroundColor: const Color.fromARGB(255, 170, 120, 255),
             child: const Icon(Icons.add),
           ),
