@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_app/pages/forgot_password.dart';
 import 'package:inbox_app/pages/homepage.dart';
 import '../components/bars.dart';
 import '../components/pop_ups.dart';
@@ -103,7 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const RegisterScreen()),
+                                              const ForgotPasswordScreen()),
                                     );
                                   },
                                   child: const Text(

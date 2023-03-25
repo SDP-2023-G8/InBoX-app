@@ -152,7 +152,24 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: const Text(
                             'Login',
                             style: TextStyle(fontSize: 22, color: Colors.white),
-                          ))
+                          )),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          textStyle: const TextStyle(fontSize: 17),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgotPasswordScreen()),
+                          );
+                        },
+                        child: const Text(
+                          'Forgot your password?',
+                          style: TextStyle(color: Colors.deepPurple),
+                        ),
+                      )
                     ],
                   )),
                 ),
