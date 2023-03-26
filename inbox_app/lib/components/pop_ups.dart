@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-
+import '../pages/verify_code.dart';
 import 'input_validation.dart';
-// TODO: view/change delivery pop-up widget
-
-// TODO: help pop-ups with different instructions, such as:
-// 1. for registration
-// 2. for usage of the unit
 
 class PopupHelpDialog extends StatelessWidget {
   final String titleText;
@@ -108,7 +103,7 @@ class _VerifyWithPasswordScreenState extends State<VerifyWithPasswordDialog> {
     }
 
     return AlertDialog(
-      title: Text(widget.titleText),
+      title: Text('${widget.titleText} InBoX'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,8 +168,6 @@ class _ChangeEmailScreenState extends State<ChangeEmailDialog> {
   final _emailController = TextEditingController();
   bool _isEmailValid = false;
 
-  bool _areDetailsCorrect = true;
-
   @override
   Widget build(BuildContext context) {
     void callSetStateEmail() {
@@ -222,7 +215,13 @@ class _ChangeEmailScreenState extends State<ChangeEmailDialog> {
         const SizedBox(height: 20),
         ElevatedButton(
             onPressed: () {
-              // TODO: verify email and (de)activate
+              // TODO: verify email and change it in the database
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => VerificationScreen(
+                        'Change Email Address', _emailController.text)),
+              );
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
             child: Text(

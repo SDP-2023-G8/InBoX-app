@@ -163,33 +163,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         ),
                                       ),
                                     ]),
-                                if (_unitStatus)
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                          'Main door ${_mainDoorLocked ? 'locked' : 'unlocked'}',
-                                          style: const TextStyle(fontSize: 17)),
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          textStyle:
-                                              const TextStyle(fontSize: 17),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _mainDoorLocked = false;
-                                          });
-                                          // TODO: open front door
-                                        },
-                                        child: const Text(
-                                          'Open main door',
-                                          style: TextStyle(
-                                              color: Colors.deepPurple),
-                                        ),
-                                      ),
-                                    ],
-                                  )
                               ],
                             ),
                           ),
