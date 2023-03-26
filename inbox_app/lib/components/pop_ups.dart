@@ -31,7 +31,7 @@ class PopupHelpDialog extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+            style: ElevatedButton.styleFrom(backgroundColor: PRIMARY_GREEN),
             child: const Text(
               'Close',
               style: TextStyle(color: Colors.white),

@@ -49,6 +49,7 @@ class _AddDeliveryFromState extends State<AddDelivery> {
                   onSaved: (String? value) {
                     deliveryName = value!;
                   },
+                  style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
                       labelText: 'Delivery Name',
                       labelStyle: TextStyle(color: Colors.white38)),
@@ -64,6 +65,7 @@ class _AddDeliveryFromState extends State<AddDelivery> {
                     onSaved: (String? value) {
                       deliveryUnit = value!;
                     },
+                    style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
                         labelText: 'InBoX Unit',
                         labelStyle: TextStyle(color: Colors.white38)),
@@ -74,19 +76,10 @@ class _AddDeliveryFromState extends State<AddDelivery> {
                       return null;
                     }),
                 const SizedBox(height: 10.0),
-                // InputDatePickerFormField(
-                //   keyboardType: TextInputType.text,
-                //   lastDate: lastDate,
-                //   firstDate: currentDate,
-                //   errorInvalidText: 'Please select a date within the next year',
-                // ),
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState?.save();
-                      //TODO: Send request to the database
-                      //On request being handled and confirmed, the delivery should be
-                      //created in deliveries_screen and getDeliveryData() called in delivery
                       var url =
                           Uri.http(REST_ENDPOINT, '/api/v1/deliveries/create');
                       Map data = {

@@ -18,7 +18,8 @@ class SimpleBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       backgroundColor: PRIMARY_GREEN,
       title: Text(titleText),
-      titleTextStyle: const TextStyle(fontSize: 30, letterSpacing: 0.5),
+      titleTextStyle: const TextStyle(
+          fontSize: 30, letterSpacing: 0.5, fontWeight: FontWeight.bold),
       centerTitle: true,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))),
@@ -68,14 +69,17 @@ class BarWithHelp extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         backgroundColor: PRIMARY_GREEN,
         automaticallyImplyLeading: false,
-        title: Text(titleText),
+        title: Text(titleText,
+            style: const TextStyle(fontWeight: FontWeight.bold)),
         titleTextStyle: const TextStyle(fontSize: 30, letterSpacing: 0.5),
         centerTitle: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))),
         actions: <Widget>[
           IconButton(
             icon: const Icon(
-              Icons.help_outline,
-              size: 40,
+              Icons.info_outline,
+              size: 30,
               color: Colors.white,
             ),
             onPressed: () {
@@ -116,7 +120,8 @@ class BarWithHelpAndBackArrow extends StatelessWidget
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(titleText),
-        titleTextStyle: const TextStyle(fontSize: 30, letterSpacing: 0.5),
+        titleTextStyle: const TextStyle(
+            fontSize: 30, letterSpacing: 0.5, fontWeight: FontWeight.bold),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
