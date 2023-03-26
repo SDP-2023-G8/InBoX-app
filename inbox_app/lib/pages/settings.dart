@@ -15,8 +15,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final _emailAdress = 'ddd@gmail.com'; // TODO: get from server
-  bool _unitStatus = true;
-  bool _mainDoorLocked = true;
+  bool _unitStatus = true; // TODO: pull from server
 
   @override
   void initState() {

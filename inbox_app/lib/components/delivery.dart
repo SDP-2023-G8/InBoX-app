@@ -348,7 +348,7 @@ class _DeliveryState extends State<Delivery> {
                       const Text('ID: '),
                       Text(
                         _deliveryId,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
                       PopupMenuButton(
@@ -360,7 +360,7 @@ class _DeliveryState extends State<Delivery> {
                               break;
                             default:
                               throw Exception(
-                                  'The value passed to Popup Menu item in delivery ${_deliveryId} was invalid');
+                                  'The value passed to Popup Menu item in delivery $_deliveryId was invalid');
                           }
                         },
                         itemBuilder: (context) => <PopupMenuEntry>[
@@ -376,7 +376,7 @@ class _DeliveryState extends State<Delivery> {
                 const Text('This Delivery was collected on '),
                 Text(
                   '${_deliveryDate.day}-${_deliveryDate.month}-${_deliveryDate.year}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const Divider(
                   color: Colors.deepPurple,

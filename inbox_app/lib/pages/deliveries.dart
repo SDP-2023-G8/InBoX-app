@@ -12,7 +12,7 @@ class DeliveriesScreen extends StatefulWidget {
 }
 
 class _DeliveriesScreenState extends State<DeliveriesScreen> {
-  var _deliveries = <Delivery>[];
+  final _deliveries = <Delivery>[];
 
   @override
   void initState() {
@@ -64,7 +64,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
             onPressed: () {
               showDialog(
                   context: context,
-                  builder: (BuildContext context) => AddDelivery());
+                  builder: (BuildContext context) => const AddDelivery());
             },
             backgroundColor: const Color.fromARGB(255, 170, 120, 255),
             child: const Icon(Icons.add),
