@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               bottomNavigationBar: const BottomBar(1),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
+                  _socket.emit("startVideo");
                   Navigator.push(
                       context,
                       MaterialPageRoute(

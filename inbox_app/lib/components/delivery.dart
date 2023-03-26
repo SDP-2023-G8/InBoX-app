@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:inbox_app/components/pop_ups.dart';
 import 'package:inbox_app/constants/constants.dart';
+import 'package:http/http.dart' as http;
+import 'package:inbox_app/pages/deliveries.dart';
 
 enum Status { notInitialised, initialised, assigned, delivered }
 
@@ -61,8 +65,10 @@ class _DeliveryState extends State<Delivery> {
   String _unitId = "";
   String _unitName = "";
   String _url = "";
+  String _imageProof = "";
   bool _delivered = false;
   String _compartmentId = "";
+  String? apiKey = "";
   String _unit = "";
   DateTime _deliveryDate = DateTime(2023, 3, 22);
   int _status = 0;
@@ -72,23 +78,20 @@ class _DeliveryState extends State<Delivery> {
   @override
   void initState() {
     super.initState();
+    loadApiKey();
 
-    _deliveryId = widget.data.deliveryID.substring(0, 5);
+    _deliveryId = widget.data.deliveryID;
     _deliveryName = widget.data.deliveryName;
     _status = widget.data.delivered ? 3 : 2;
     _url = widget.data.url;
     _delivered = widget.data.delivered;
     _unit = widget.data.unit;
+    _imageProof = widget.data.imageProof;
   }
 
-  // Function to get the delivery data from the REST API for a delivery object
-  // TODO: This function all also get the date of existing deliveries from the database
-  void getDeliveryData() {
-    setState(() {
-      _deliveryId = "1";
-      _deliveryName = "Name";
-      _status = 1;
-    });
+  Future<void> loadApiKey() async {
+    const storage = FlutterSecureStorage();
+    apiKey = await storage.read(key: "jwt");
   }
 
   // Function assigns a compartment to the delivery
@@ -99,30 +102,6 @@ class _DeliveryState extends State<Delivery> {
       _compartmentId = compartmentId;
       _status = 2;
     });
-  }
-
-  // Function marks a delivery as delivered
-  void setDelivered() {
-    setState(() {
-      _status = 3;
-    });
-  }
-
-  /**
-   * Function to toggle if a delivery is expanded.
-   * When expanded, the details of the devliery can be viewed
-   */
-  bool toggleIsExpanded() {
-    if (_isExpanded) {
-      setState(() {
-        _isExpanded = false;
-      });
-    } else {
-      setState(() {
-        _isExpanded = true;
-      });
-    }
-    return _isExpanded;
   }
 
   @override
@@ -208,35 +187,55 @@ class _DeliveryState extends State<Delivery> {
                                         .showSnackBar(snackBar);
                                   })),
                           const SizedBox(width: 5),
-                          Material(
-                            child: InkWell(
-                              onTap: () {
-                                //TODO: Display proof of delivery image
-                              },
-                              child: Ink(
-                                  color: PRIMARY_BLACK,
-                                  height: 40.0,
-                                  width: 40.0,
-                                  child: const Icon(Icons.image,
-                                      color: Colors.white)),
+                          if (_delivered) ...[
+                            Material(
+                              child: InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        DeliveryProofPopup(_imageProof),
+                                  );
+                                },
+                                child: Ink(
+                                    color: PRIMARY_BLACK,
+                                    height: 40.0,
+                                    width: 40.0,
+                                    child: const Icon(Icons.image,
+                                        color: Colors.white)),
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 5),
-                          Material(
-                            child: InkWell(
-                              onTap: () {
-                                //TODO: Delete delivery
-                              },
-                              child: Ink(
-                                  color: PRIMARY_RED,
-                                  height: 40.0,
-                                  width: 40.0,
-                                  child: const Icon(
-                                    Icons.delete_forever_rounded,
-                                    color: Colors.white,
-                                  )),
+                            const SizedBox(width: 5),
+                            Material(
+                              child: InkWell(
+                                onTap: () {
+                                  var url = Uri.http(REST_ENDPOINT,
+                                      '/api/v1/deliveries/delete/$_deliveryId');
+                                  Map data = {
+                                    "email":
+                                        "josue.fle.sanc@gmail.com", // TODO: change this to dynamic email
+                                  };
+                                  http.delete(url, body: data, headers: {
+                                    'Authorization': "Bearer: $apiKey"
+                                  });
+                                  Navigator.pop(context); // pop current page
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const DeliveriesScreen())); // push it back in
+                                },
+                                child: Ink(
+                                    color: PRIMARY_RED,
+                                    height: 40.0,
+                                    width: 40.0,
+                                    child: const Icon(
+                                      Icons.delete_forever_rounded,
+                                      color: Colors.white,
+                                    )),
+                              ),
                             ),
-                          ),
+                          ]
                         ])
                   ]),
                 )

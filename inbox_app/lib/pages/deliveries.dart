@@ -100,8 +100,11 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               showDialog(
-                  context: context,
-                  builder: (BuildContext context) => const AddDelivery());
+                      context: context,
+                      builder: (BuildContext context) => const AddDelivery())
+                  .then((value) {
+                setState(() {});
+              });
             },
             backgroundColor: PRIMARY_GREEN,
             child: const Icon(Icons.add),
