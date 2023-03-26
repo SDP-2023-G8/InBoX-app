@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inbox_app/constants/constants.dart';
 import '../pages/deliveries.dart';
 import '../pages/homepage.dart';
 import '../pages/settings.dart';
@@ -15,10 +16,12 @@ class SimpleBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: PRIMARY_GREEN,
       title: Text(titleText),
       titleTextStyle: const TextStyle(fontSize: 30, letterSpacing: 0.5),
       centerTitle: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))),
     );
   }
 }
@@ -33,7 +36,7 @@ class BarWithBackArrow extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: PRIMARY_GREEN,
       leading: IconButton(
         icon: const Icon(
           Icons.keyboard_arrow_left,
@@ -63,7 +66,7 @@ class BarWithHelp extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: PRIMARY_GREEN,
         automaticallyImplyLeading: false,
         title: Text(titleText),
         titleTextStyle: const TextStyle(fontSize: 30, letterSpacing: 0.5),
@@ -103,7 +106,7 @@ class BarWithHelpAndBackArrow extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: PRIMARY_BLACK,
         leading: IconButton(
           icon: const Icon(
             Icons.keyboard_arrow_left,
@@ -142,20 +145,18 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-        height: 60,
-        padding: const EdgeInsets.only(bottom: 10),
+        height: 70,
+        color: PRIMARY_GREY,
+        padding: const EdgeInsets.only(bottom: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(color: Colors.deepPurple, height: 2),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               IconButton(
                   icon: Icon(
                     Icons.list,
-                    size: 40,
-                    color: page == 0
-                        ? const Color.fromARGB(255, 50, 5, 70)
-                        : const Color.fromARGB(255, 170, 120, 255),
+                    size: 45,
+                    color: page == 0 ? PRIMARY_GREEN : PRIMARY_BLACK,
                   ),
                   onPressed: () => {
                         if (page != 0)
@@ -170,10 +171,8 @@ class BottomBar extends StatelessWidget {
               IconButton(
                   icon: Icon(
                     Icons.home,
-                    size: 40,
-                    color: page == 1
-                        ? const Color.fromARGB(255, 50, 5, 70)
-                        : const Color.fromARGB(255, 170, 120, 255),
+                    size: 45,
+                    color: page == 1 ? PRIMARY_GREEN : PRIMARY_BLACK,
                   ),
                   onPressed: () => {
                         if (page != 1)
@@ -187,10 +186,8 @@ class BottomBar extends StatelessWidget {
               IconButton(
                   icon: Icon(
                     Icons.settings,
-                    size: 40,
-                    color: page == 2
-                        ? const Color.fromARGB(255, 50, 5, 70)
-                        : const Color.fromARGB(255, 170, 120, 255),
+                    size: 45,
+                    color: page == 2 ? PRIMARY_GREEN : PRIMARY_BLACK,
                   ),
                   onPressed: () => {
                         if (page != 2)
@@ -207,4 +204,3 @@ class BottomBar extends StatelessWidget {
         ));
   }
 }
-// TODO: Bottom bar with three icons (deliveries list, home, settings)

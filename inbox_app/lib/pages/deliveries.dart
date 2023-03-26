@@ -21,7 +21,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
     'autoConnect': false,
     'transports': ['websocket'],
   });
-  final _deliveries = <Delivery>[];
+  List<Delivery> _deliveries = <Delivery>[];
 
   @override
   void initState() {
@@ -30,6 +30,9 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
   }
 
   Future<bool> loadDeliveries() async {
+    _deliveries = [];
+
+    //TODO: Change my email to a dynamically loaded user email
     var url =
         Uri.http(REST_ENDPOINT, '/api/v1/deliveries/josue.fle.sanc@gmail.com');
     var response = await http.get(url);
@@ -68,7 +71,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.white,
+          backgroundColor: PRIMARY_BLACK,
           appBar: const SimpleBar('Deliveries'),
           bottomNavigationBar: const BottomBar(0),
           body: FutureBuilder(
@@ -81,7 +84,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
                         hasScrollBody: false,
                         child: Center(
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: _deliveries),

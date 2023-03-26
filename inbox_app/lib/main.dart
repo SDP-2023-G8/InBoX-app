@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:inbox_app/notification_service.dart';
@@ -56,6 +57,9 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
           colorScheme:
               ColorScheme.fromSwatch().copyWith(primary: PRIMARY_GREEN),
+          textTheme: GoogleFonts.robotoTextTheme(
+            Theme.of(context).textTheme,
+          ),
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
             backgroundColor: PRIMARY_GREEN,
           )),

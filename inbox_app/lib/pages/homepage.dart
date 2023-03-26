@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           child: Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.white,
+              backgroundColor: PRIMARY_BLACK,
               appBar: const BarWithHelp('Your InBoX', 'How to use InBoX app?',
                   'Description'), // TODO: add description
               bottomNavigationBar: const BottomBar(1),
@@ -68,13 +68,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                          color: Colors.grey,
+                          color: PRIMARY_GREY,
                           border: const Border(
                               top: BorderSide(),
                               bottom: BorderSide(),
                               left: BorderSide(),
                               right: BorderSide()),
-                          borderRadius: BorderRadius.circular(20)),
+                          borderRadius: BorderRadius.circular(0)),
                       child: GridView.count(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
