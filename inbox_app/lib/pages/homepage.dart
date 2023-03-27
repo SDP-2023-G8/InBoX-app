@@ -1,10 +1,56 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:inbox_app/components/pop_ups.dart';
 import 'package:inbox_app/constants/constants.dart';
 import 'package:inbox_app/pages/live_video.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:http/http.dart' as http;
 import 'package:inbox_app/components/compartment.dart';
 import '../components/bars.dart';
+
+class UnitData {
+  final String name;
+  final String ownerEmail;
+  final String boxID;
+  final List<CompartmentData> compartments;
+
+  UnitData(
+      {required this.name,
+      required this.ownerEmail,
+      required this.boxID,
+      required this.compartments});
+
+  factory UnitData.fromJson(Map<String, dynamic> json) {
+    return UnitData(
+        name: json["name"],
+        ownerEmail: json["ownerEmail"],
+        boxID: json["boxID"],
+        compartments: (json["compartments"] as List)
+            .map((data) => CompartmentData.fromJson(data))
+            .toList());
+  }
+}
+
+class CompartmentData {
+  final String compartmentName;
+  final bool free;
+  final String deliveryID;
+
+  CompartmentData(
+      {required this.compartmentName,
+      required this.free,
+      required this.deliveryID});
+
+  factory CompartmentData.fromJson(Map<String, dynamic> json) {
+    return CompartmentData(
+        compartmentName: json["compartmentName"],
+        free: json["free"],
+        deliveryID: json["deliveryID"]);
+  }
+}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,7 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
     'transports': ['websockets'],
   });
 
-  final List<Compartment> _compartments = [];
+  var loadingUnits;
+  String? apiKey = "";
+  int _index = 0;
+  List<UnitData> _units = [];
 
   Widget _getFAB() {
     return SpeedDial(
@@ -94,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             labelWidget: const Padding(
               padding: EdgeInsets.all(10.0),
-              child: Text("Live Feed",
+              child: Text("Unlock Unit",
                   style: TextStyle(color: Colors.white, fontSize: 17.0)),
             ),
           ),
@@ -107,10 +156,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _socket.connect();
 
+    loadingUnits = loadUnits();
+
     // TODO: get states of the compartments from server
-    for (int i = 1; i <= 4; i++) {
-      _compartments.add(Compartment(i));
-    }
+    // for (int i = 1; i <= 4; i++) {
+    //   _compartments.add(Compartment(i));
+    // }
+  }
+
+  Future<bool> loadUnits() async {
+    const storage = FlutterSecureStorage();
+    apiKey = await storage.read(key: "jwt");
+
+    var url = Uri.http(REST_ENDPOINT, '/api/v1/units/josue.fle.sanc@gmail.com');
+    var response =
+        await http.get(url, headers: {'Authorization': "Bearer: $apiKey"});
+    Iterable l = json.decode(response.body);
+    _units = (l as List).map((data) => UnitData.fromJson(data)).toList();
+
+    return true;
   }
 
   @override
@@ -133,58 +197,226 @@ class _HomeScreenState extends State<HomeScreen> {
               bottomNavigationBar: const BottomBar(1),
               body: Padding(
                 padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          color: PRIMARY_GREY,
-                          border: const Border(
-                              top: BorderSide(),
-                              bottom: BorderSide(),
-                              left: BorderSide(),
-                              right: BorderSide()),
-                          borderRadius: BorderRadius.circular(0)),
-                      child: GridView.count(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 5,
-                          crossAxisSpacing: 5,
-                          children: _compartments),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Compartment Status:',
-                            style: TextStyle(fontSize: 20)),
-                        Row(
-                          children: const [
-                            Icon(
-                              Icons.circle,
-                              color: Colors.red,
-                            ),
-                            Text(' Occupied', style: TextStyle(fontSize: 20)),
+                child: Center(
+                  child: FutureBuilder(
+                      future: loadingUnits,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done) {
+                          return const CircularProgressIndicator();
+                        }
+
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(_units[0].name,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w100,
+                                    fontSize: 30)),
+                            const SizedBox(height: 10.0),
+                            Container(
+                                padding: const EdgeInsets.all(5),
+                                height: 350,
+                                width: 350,
+                                decoration:
+                                    const BoxDecoration(color: PRIMARY_GREY),
+                                child: Center(
+                                  child: SizedBox(
+                                    height: 300,
+                                    width: 300,
+                                    child: PageView.builder(
+                                        itemCount:
+                                            _units[0].compartments.length + 1,
+                                        controller:
+                                            PageController(viewportFraction: 1),
+                                        onPageChanged: (int index) =>
+                                            setState(() => _index = index),
+                                        itemBuilder: (_, i) {
+                                          if (i ==
+                                              _units[0].compartments.length) {
+                                            return Card(
+                                              elevation: 3,
+                                              color: PRIMARY_BLACK,
+                                              child: Center(
+                                                child: Material(
+                                                  type:
+                                                      MaterialType.transparency,
+                                                  child: IconButton(
+                                                    icon: const Icon(Icons.add),
+                                                    iconSize: 40,
+                                                    splashColor: PRIMARY_GREEN,
+                                                    color: Colors.white,
+                                                    onPressed: () {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              AddCompartmentPopup(
+                                                                  _units[0]
+                                                                      .name)).then(
+                                                          (value) {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        Future.delayed(
+                                                            const Duration(
+                                                                seconds: 1));
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const HomeScreen()));
+                                                      });
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+
+                                          return Stack(children: [
+                                            const Card(
+                                                elevation: 3,
+                                                color: PRIMARY_BLACK,
+                                                child: Center()),
+                                            Positioned(
+                                                bottom: 25,
+                                                left: 25,
+                                                width: 250,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Text(
+                                                            _units[0]
+                                                                .compartments[i]
+                                                                .compartmentName,
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 18)),
+                                                        const SizedBox(
+                                                            height: 5),
+                                                        Text(
+                                                            _units[0]
+                                                                    .compartments[
+                                                                        i]
+                                                                    .free
+                                                                ? "Compartment is Available!"
+                                                                : "Delivery '${_units[0].compartments[i].deliveryID}' Assigned",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w100,
+                                                                color: _units[0]
+                                                                        .compartments[
+                                                                            i]
+                                                                        .free
+                                                                    ? PRIMARY_GREEN
+                                                                    : PRIMARY_RED,
+                                                                fontSize: 13))
+                                                      ],
+                                                    ),
+                                                    Material(
+                                                      type: MaterialType
+                                                          .transparency,
+                                                      child: IconButton(
+                                                        icon: const Icon(
+                                                            Icons.lock_open),
+                                                        iconSize: 22,
+                                                        splashColor:
+                                                            PRIMARY_GREEN,
+                                                        color: Colors.white,
+                                                        onPressed: () {
+                                                          var snackBar =
+                                                              SnackBar(
+                                                            content: Text(
+                                                                "Unlocked '${_units[0].compartments[i].compartmentName}'!"),
+                                                            backgroundColor:
+                                                                PRIMARY_GREEN,
+                                                          );
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  snackBar);
+                                                        },
+                                                      ),
+                                                    )
+                                                  ],
+                                                )),
+                                            Positioned(
+                                              top: 20,
+                                              left: 20,
+                                              child: Material(
+                                                type: MaterialType.transparency,
+                                                child: IconButton(
+                                                  icon:
+                                                      const Icon(Icons.delete),
+                                                  iconSize: 25,
+                                                  color: Colors.white38,
+                                                  splashColor: PRIMARY_RED,
+                                                  onPressed: () {
+                                                    var url = Uri.http(
+                                                        REST_ENDPOINT,
+                                                        'api/v1/units/compartment/${_units[0].name}/${_units[0].compartments[i].compartmentName}');
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            ConfirmCompartmentDeletionPopup(
+                                                                _units[0]
+                                                                    .compartments[
+                                                                        i]
+                                                                    .compartmentName,
+                                                                url)).then(
+                                                        (value) {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      Future.delayed(
+                                                          const Duration(
+                                                              seconds: 1));
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const HomeScreen()));
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                                top: 25,
+                                                right: 25,
+                                                child: Container(
+                                                  height: 25.0,
+                                                  width: 25.0,
+                                                  decoration: BoxDecoration(
+                                                    color: _units[0]
+                                                            .compartments[i]
+                                                            .free
+                                                        ? PRIMARY_GREEN
+                                                        : PRIMARY_RED,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                ))
+                                          ]);
+                                        }),
+                                  ),
+                                )),
                           ],
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.circle, color: Colors.yellow),
-                            Text('Reserved', style: TextStyle(fontSize: 20)),
-                          ],
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.circle, color: Colors.green),
-                            Text('Free', style: TextStyle(fontSize: 20)),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
+                        );
+                      }),
                 ),
               ))),
     );
