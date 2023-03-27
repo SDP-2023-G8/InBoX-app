@@ -202,12 +202,15 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: PRIMARY_BLACK,
-              appBar: const BarWithHelp('Your InBoX', 'How to use InBoX app?',
+              appBar: const BarWithHelp(
+                  'Your InBoX',
+                  'How to use InBoX app?',
                   'Each compartment has its status. It can be occupied if a delivery has been completed, '
                       'reserved for a future delivery or free. \n'
                       '1. Occupied: you can open the compartment by tapping the "Open" button.\n'
                       '2. Reserved: you can view and/or change the details of a future delivery by tapping the "View Delivery" button.\n'
-                      '3. Free: you can assign the compartment to a delivery by tapping the "Add Delivery" button, then it will become reserved'),
+                      '3. Free: you can assign the compartment to a delivery by tapping the "Add Delivery" button, then it will become reserved.\n'
+                      'To move between compartments, swipe left or right.'),
               floatingActionButton: _getFAB(),
               bottomNavigationBar: const BottomBar(1),
               body: Padding(

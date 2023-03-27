@@ -110,7 +110,7 @@ class BarWithHelpAndBackArrow extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        backgroundColor: PRIMARY_BLACK,
+        backgroundColor: PRIMARY_GREEN,
         leading: IconButton(
           icon: const Icon(
             Icons.keyboard_arrow_left,
