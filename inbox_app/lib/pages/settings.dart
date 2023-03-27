@@ -171,6 +171,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                             alignment: Alignment.centerLeft,
                             child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: PRIMARY_RED),
                               onPressed: () {
                                 showDialog(
                                     context: context,
@@ -179,8 +181,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               },
                               child: const Text(
                                 'Delete Account',
-                                style:
-                                    TextStyle(color: PRIMARY_RED, fontSize: 20),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
                               ),
                             ),
                           ),

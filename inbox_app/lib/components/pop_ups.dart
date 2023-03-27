@@ -218,12 +218,13 @@ class DeleteAccountDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(titleText),
+      backgroundColor: PRIMARY_BLACK,
+      title: Text(titleText, style: const TextStyle(color: Colors.white)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(dialogText),
+          Text(dialogText, style: const TextStyle(color: Colors.white)),
         ],
       ),
       actions: <Widget>[
@@ -231,19 +232,18 @@ class DeleteAccountDialog extends StatelessWidget {
             onPressed: () {
               // TODO: delete the account UNLESS there are outstanding deliveries!!!
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: PRIMARY_RED),
             child: const Text(
               'Delete Account',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white, fontSize: 17),
             )),
         ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
             child: const Text(
               'Cancel',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white, fontSize: 17),
             ))
       ],
     );
@@ -280,49 +280,54 @@ class _VerifyWithPasswordScreenState extends State<VerifyWithPasswordDialog> {
     }
 
     return AlertDialog(
-      title: Text('${widget.titleText} InBoX'),
+      backgroundColor: PRIMARY_BLACK,
+      title: Text('${widget.titleText} InBoX',
+          style: const TextStyle(color: Colors.white)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(widget.dialogText),
+          Text(widget.dialogText, style: const TextStyle(color: Colors.white)),
+          const SizedBox(height: 20),
+          TextFormField(
+            controller: _passwordController,
+            obscureText: _isObscure,
+            style: const TextStyle(color: Colors.white, fontSize: 18),
+            autofocus: true,
+            decoration: InputDecoration(
+                labelText: 'Password',
+                labelStyle: const TextStyle(color: PRIMARY_GREEN, fontSize: 24),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                hintText: 'Enter your password',
+                hintStyle: const TextStyle(fontSize: 18, color: Colors.grey),
+                focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: PRIMARY_GREEN)),
+                border: const OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  color: PRIMARY_GREEN,
+                  icon: Icon(
+                      _isObscure ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () => callSetStateObscure(),
+                )),
+            onChanged: (_) => callSetStateDetailsCorrect(true),
+          ),
+          const SizedBox(height: 5),
+          if (!_areDetailsCorrect)
+            const Text('Incorrect password',
+                style: TextStyle(fontSize: 17, color: PRIMARY_RED))
         ],
       ),
       actions: <Widget>[
-        TextFormField(
-          controller: _passwordController,
-          obscureText: _isObscure,
-          cursorColor: Colors.deepPurple,
-          style: const TextStyle(fontSize: 18),
-          decoration: InputDecoration(
-              labelText: 'Password',
-              labelStyle:
-                  const TextStyle(color: Colors.deepPurple, fontSize: 24),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              hintText: 'Enter your password',
-              hintStyle: const TextStyle(fontSize: 18, color: Colors.grey),
-              focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.deepPurple)),
-              border: const OutlineInputBorder(),
-              suffixIcon: IconButton(
-                color: Colors.deepPurple,
-                icon:
-                    Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
-                onPressed: () => callSetStateObscure(),
-              )),
-          onChanged: (_) => callSetStateDetailsCorrect(true),
-        ),
-        const SizedBox(height: 5),
-        Text(_areDetailsCorrect ? '' : 'Incorrect password',
-            style: TextStyle(
-                fontSize: 17,
-                color: _areDetailsCorrect ? Colors.green : Colors.red)),
-        const SizedBox(height: 20),
         ElevatedButton(
             onPressed: () {
-              // TODO: verify email and (de)activate
+              if (_passwordController.text.isNotEmpty &&
+                  _passwordController.text.length >= 8) {
+                // TODO: verify email and (de)activate
+              } else {
+                callSetStateDetailsCorrect(false);
+              }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+            style: ElevatedButton.styleFrom(backgroundColor: PRIMARY_GREEN),
             child: Text(
               widget.titleText,
               style: const TextStyle(color: Colors.white, fontSize: 17),
@@ -354,53 +359,50 @@ class _ChangeEmailScreenState extends State<ChangeEmailDialog> {
     }
 
     return AlertDialog(
-      title: Text(widget.titleText),
+      backgroundColor: PRIMARY_BLACK,
+      title:
+          Text(widget.titleText, style: const TextStyle(color: Colors.white)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(widget.dialogText),
+          Text(widget.dialogText, style: const TextStyle(color: Colors.white)),
+          const SizedBox(height: 20),
+          TextFormField(
+            controller: _emailController,
+            style: const TextStyle(color: Colors.white, fontSize: 18),
+            autofocus: true,
+            decoration: const InputDecoration(
+              labelText: 'Email',
+              labelStyle: TextStyle(color: PRIMARY_GREEN, fontSize: 24),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintText: 'Enter your new email',
+              hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: PRIMARY_GREEN)),
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (value) => callSetStateEmail(),
+          ),
+          const SizedBox(height: 5),
+          if (!_isEmailValid && _emailController.text.isNotEmpty)
+            const Text('Invalid email address',
+                style: TextStyle(fontSize: 17, color: PRIMARY_RED))
         ],
       ),
       actions: <Widget>[
-        TextFormField(
-          controller: _emailController,
-          cursorColor: Colors.deepPurple,
-          style: const TextStyle(fontSize: 18),
-          decoration: const InputDecoration(
-            labelText: 'Email',
-            labelStyle: TextStyle(color: Colors.deepPurple, fontSize: 24),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: 'Enter your new email',
-            hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.deepPurple)),
-            border: OutlineInputBorder(),
-          ),
-          onChanged: (value) => callSetStateEmail(),
-        ),
-        const SizedBox(height: 5),
-        Text(
-            (_isEmailValid || _emailController.text.isEmpty)
-                ? ''
-                : 'Invalid email address',
-            style: TextStyle(
-                fontSize: 17,
-                color: (_isEmailValid || _emailController.text.isEmpty)
-                    ? Colors.green
-                    : Colors.red)),
-        const SizedBox(height: 20),
         ElevatedButton(
             onPressed: () {
-              // TODO: verify email and change it in the database
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => VerificationScreen(
-                        'Change Email Address', _emailController.text)),
-              );
+              if (_isEmailValid && _emailController.text.isNotEmpty) {
+                // TODO: verify email and change it in the database
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => VerificationScreen(
+                          'Change Email Address', _emailController.text)),
+                );
+              }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
             child: Text(
               widget.titleText,
               style: const TextStyle(color: Colors.white, fontSize: 17),
