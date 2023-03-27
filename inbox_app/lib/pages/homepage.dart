@@ -70,6 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
   int _index = 0;
   List<UnitData> _units = [];
 
+  final TextEditingController _titleController =
+      TextEditingController(text: "Loading...");
+  bool _titleEnabled = false;
+
   Widget _getFAB() {
     return SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
@@ -115,6 +119,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: PRIMARY_GREEN,
                 duration: const Duration(milliseconds: 1500),
               );
+
+              Future.delayed(const Duration(seconds: 30), () {
+                _socket.emit("enable_alarm");
+              });
+
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
             labelWidget: const Padding(
@@ -174,6 +183,8 @@ class _HomeScreenState extends State<HomeScreen> {
     Iterable l = json.decode(response.body);
     _units = (l as List).map((data) => UnitData.fromJson(data)).toList();
 
+    _titleController.text = _units[0].name;
+
     return true;
   }
 
@@ -209,11 +220,29 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(_units[0].name,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w100,
-                                    fontSize: 30)),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 120,
+                                    child: TextField(
+                                        controller: _titleController,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 30),
+                                        enabled: _titleEnabled),
+                                  ),
+                                  IconButton(
+                                      icon: const Icon(Icons.edit),
+                                      iconSize: 22,
+                                      color: Colors.white,
+                                      onPressed: () {
+                                        setState(() {
+                                          _titleEnabled = true;
+                                        });
+                                      })
+                                ]),
                             const SizedBox(height: 10.0),
                             Container(
                                 padding: const EdgeInsets.all(5),
@@ -275,6 +304,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                             );
                                           }
 
+                                          final _compartmentNameController =
+                                              TextEditingController(
+                                                  text: _units[0]
+                                                      .compartments[i]
+                                                      .compartmentName);
+                                          bool _isCompartmentNameEnabled =
+                                              false;
+
                                           return Stack(children: [
                                             const Card(
                                                 elevation: 3,
@@ -294,19 +331,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: <Widget>[
-                                                        Text(
-                                                            _units[0]
-                                                                .compartments[i]
-                                                                .compartmentName,
-                                                            style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 18)),
-                                                        const SizedBox(
-                                                            height: 5),
+                                                        Row(
+                                                          children: [
+                                                            SizedBox(
+                                                                width: 120,
+                                                                child: TextField(
+                                                                    controller:
+                                                                        _compartmentNameController,
+                                                                    style: const TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            18),
+                                                                    enabled:
+                                                                        _isCompartmentNameEnabled)),
+                                                            IconButton(
+                                                              icon: const Icon(
+                                                                  Icons.edit),
+                                                              iconSize: 15,
+                                                              color:
+                                                                  Colors.white,
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  _isCompartmentNameEnabled =
+                                                                      true;
+                                                                });
+                                                              },
+                                                            )
+                                                          ],
+                                                        ),
                                                         Text(
                                                             _units[0]
                                                                     .compartments[
