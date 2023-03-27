@@ -16,7 +16,7 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
-  Color _codeColor = Colors.black;
+  Color _codeColor = PRIMARY_GREEN;
   String _errorText = '';
   int _attemptsLeft = 5;
 
@@ -38,7 +38,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
           },
           child: Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.white,
+              backgroundColor: PRIMARY_BLACK,
               appBar: SimpleBar(widget.title),
               body: CustomScrollView(slivers: [
                 SliverFillRemaining(
@@ -51,7 +51,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               const SizedBox(height: 200),
                               Text(
                                 'Please enter the 4-digit code sent to you at\n${widget._emailAddress}.',
-                                style: const TextStyle(fontSize: 18),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 18),
                               ),
                               VerificationCode(
                                 textStyle: TextStyle(
@@ -60,8 +61,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 ),
                                 margin:
                                     const EdgeInsets.only(top: 20, bottom: 10),
-                                underlineColor: Colors.deepPurple,
-                                cursorColor: Colors.deepPurple,
+                                underlineColor: PRIMARY_GREEN,
+                                cursorColor: PRIMARY_GREEN,
                                 keyboardType: TextInputType.number,
                                 length: 4,
                                 autofocus: true,
@@ -81,7 +82,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                     );
                                   } else {
                                     setState(() {
-                                      _codeColor = Colors.red;
+                                      _codeColor = PRIMARY_RED;
                                       _attemptsLeft--;
                                       String att = _attemptsLeft == 1
                                           ? 'attempt'
@@ -97,7 +98,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 onEditing: (bool value) {
                                   if (value) {
                                     setState(() {
-                                      _codeColor = Colors.black;
+                                      _codeColor = PRIMARY_GREEN;
                                       _errorText = '';
                                     });
                                   }
@@ -106,7 +107,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               Text(
                                 _errorText,
                                 style: const TextStyle(
-                                    fontSize: 16, color: Colors.red),
+                                    fontSize: 16, color: PRIMARY_RED),
                               )
                             ])))
               ])),

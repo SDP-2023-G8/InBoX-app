@@ -302,7 +302,8 @@ class _VerifyWithPasswordScreenState extends State<VerifyWithPasswordDialog> {
                 hintStyle: const TextStyle(fontSize: 18, color: Colors.grey),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: PRIMARY_GREEN)),
-                border: const OutlineInputBorder(),
+                enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: PRIMARY_GREY)),
                 suffixIcon: IconButton(
                   color: PRIMARY_GREEN,
                   icon: Icon(
@@ -380,7 +381,8 @@ class _ChangeEmailScreenState extends State<ChangeEmailDialog> {
               hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: PRIMARY_GREEN)),
-              border: OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: PRIMARY_GREY)),
             ),
             onChanged: (value) => callSetStateEmail(),
           ),

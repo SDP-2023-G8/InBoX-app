@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:inbox_app/components/bars.dart';
 import 'package:inbox_app/constants/constants.dart';
 import 'package:inbox_app/pages/verify_code.dart';
-
 import '../components/input_validation.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -75,7 +74,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         child: Scaffold(
             resizeToAvoidBottomInset: false,
-            backgroundColor: Colors.white,
+            backgroundColor: PRIMARY_BLACK,
             appBar: const BarWithHelpAndBackArrow(
                 'Register',
                 'How to Register?',
@@ -96,19 +95,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 50),
                       TextFormField(
                         controller: _emailController,
-                        cursorColor: Colors.deepPurple,
-                        style: const TextStyle(fontSize: 18),
+                        cursorColor: PRIMARY_GREEN,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18),
                         decoration: const InputDecoration(
                           labelText: 'Email',
                           labelStyle:
-                              TextStyle(color: Colors.deepPurple, fontSize: 24),
+                              TextStyle(color: PRIMARY_GREEN, fontSize: 24),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           hintText: 'Enter your email',
                           hintStyle:
                               TextStyle(fontSize: 18, color: Colors.grey),
                           focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.deepPurple)),
-                          border: OutlineInputBorder(),
+                              borderSide: BorderSide(color: PRIMARY_GREEN)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: PRIMARY_GREY)),
                         ),
                         onChanged: (value) => callSetStateEmail(),
                       ),
@@ -121,28 +122,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               fontSize: 17,
                               color: (_isEmailValid ||
                                       _emailController.text.isEmpty)
-                                  ? Colors.green
-                                  : Colors.red)),
+                                  ? PRIMARY_GREEN
+                                  : PRIMARY_RED)),
                       const SizedBox(height: 20),
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _isObscure1,
-                        cursorColor: Colors.deepPurple,
-                        style: const TextStyle(fontSize: 18),
+                        cursorColor: PRIMARY_GREEN,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18),
                         decoration: InputDecoration(
                             labelText: 'Password',
                             labelStyle: const TextStyle(
-                                color: Colors.deepPurple, fontSize: 24),
+                                color: PRIMARY_GREEN, fontSize: 24),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             hintText: 'Create your password',
                             hintStyle: const TextStyle(
                                 fontSize: 18, color: Colors.grey),
                             focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.deepPurple)),
-                            border: const OutlineInputBorder(),
+                                borderSide: BorderSide(color: PRIMARY_GREEN)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: PRIMARY_GREY)),
                             suffixIcon: IconButton(
-                              color: Colors.deepPurple,
+                              color: PRIMARY_GREEN,
                               icon: Icon(_isObscure1
                                   ? Icons.visibility
                                   : Icons.visibility_off),
@@ -160,46 +162,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Text('${_input.min8 ? '•  ' : '× '}At least 8 characters',
                           style: TextStyle(
                               fontSize: 17,
-                              color: _input.min8 ? Colors.green : Colors.red)),
+                              color:
+                                  _input.min8 ? PRIMARY_GREEN : PRIMARY_RED)),
                       Text(
                           '${_input.lowerCase ? '•  ' : '× '}At least 1 small letter',
                           style: TextStyle(
                               fontSize: 17,
                               color: _input.lowerCase
-                                  ? Colors.green
-                                  : Colors.red)),
+                                  ? PRIMARY_GREEN
+                                  : PRIMARY_RED)),
                       Text(
                           '${_input.upperCase ? '•  ' : '× '}At least 1 capital letter',
                           style: TextStyle(
                               fontSize: 17,
                               color: _input.upperCase
-                                  ? Colors.green
-                                  : Colors.red)),
+                                  ? PRIMARY_GREEN
+                                  : PRIMARY_RED)),
                       Text('${_input.number ? '•  ' : '× '}At least 1 digit',
                           style: TextStyle(
                               fontSize: 17,
                               color:
-                                  _input.number ? Colors.green : Colors.red)),
-                      const SizedBox(height: 20),
+                                  _input.number ? PRIMARY_GREEN : PRIMARY_RED)),
+                      const SizedBox(height: 30),
                       TextFormField(
                         controller: _repeatPasswordController,
                         obscureText: _isObscure2,
-                        cursorColor: Colors.deepPurple,
-                        style: const TextStyle(fontSize: 18),
+                        cursorColor: PRIMARY_GREEN,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18),
                         decoration: InputDecoration(
                             labelText: 'Password',
                             labelStyle: const TextStyle(
-                                color: Colors.deepPurple, fontSize: 24),
+                                color: PRIMARY_GREEN, fontSize: 24),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             hintText: 'Repeat your password',
                             hintStyle: const TextStyle(
                                 fontSize: 18, color: Colors.grey),
                             focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.deepPurple)),
-                            border: const OutlineInputBorder(),
+                                borderSide: BorderSide(color: PRIMARY_GREEN)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: PRIMARY_GREY)),
                             suffixIcon: IconButton(
-                              color: Colors.deepPurple,
+                              color: PRIMARY_GREEN,
                               icon: Icon(_isObscure2
                                   ? Icons.visibility
                                   : Icons.visibility_off),
@@ -218,8 +222,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               : 'Passwords do not match',
                           style: TextStyle(
                               fontSize: 17,
-                              color:
-                                  _passwordsMatch ? Colors.green : Colors.red)),
+                              color: _passwordsMatch
+                                  ? PRIMARY_GREEN
+                                  : PRIMARY_RED)),
                       const SizedBox(height: 20),
                       Align(
                         alignment: Alignment.center,
@@ -231,40 +236,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           isPasswordValid(
                                               _passwordController.text) &&
                                           _passwordsMatch)
-                                      ? Colors.deepPurple
-                                      : Colors.grey,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)))),
+                                      ? PRIMARY_GREEN
+                                      : PRIMARY_GREY),
                           onPressed: () async {
-                            var url = Uri.http(
-                                REST_ENDPOINT, '/api/v1/users/register');
-                            Map data = {
-                              "email": _emailController.text,
-                              "password": _passwordController.text
-                            };
-                            var response = await http.post(url,
-                                headers: {"Content-Type": "application/json"},
-                                body: json.encode(data));
+                            if (isEmailValid(_emailController.text) &&
+                                isPasswordValid(_passwordController.text) &&
+                                _passwordsMatch) {
+                              var url = Uri.http(
+                                  REST_ENDPOINT, '/api/v1/users/register');
+                              Map data = {
+                                "email": _emailController.text,
+                                "password": _passwordController.text
+                              };
+                              var response = await http.post(url,
+                                  headers: {"Content-Type": "application/json"},
+                                  body: json.encode(data));
 
-                            if (response.statusCode == 201 && context.mounted) {
-                              // Send email verification code
-                              var url = Uri.http(REST_ENDPOINT,
-                                  '/api/v1/users/${_emailController.text}/verification');
-                              http.get(url);
+                              if (response.statusCode == 201 &&
+                                  context.mounted) {
+                                // Send email verification code
+                                var url = Uri.http(REST_ENDPOINT,
+                                    '/api/v1/users/${_emailController.text}/verification');
+                                http.get(url);
 
-                              // Save authentication token
-                              const storage = FlutterSecureStorage();
-                              storage.write(
-                                  key: "jwt",
-                                  value: json.decode(response.body)["token"]);
+                                // Save authentication token
+                                const storage = FlutterSecureStorage();
+                                storage.write(
+                                    key: "jwt",
+                                    value: json.decode(response.body)["token"]);
 
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => VerificationScreen(
-                                        'Register', _emailController.text)),
-                              );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => VerificationScreen(
+                                          'Register', _emailController.text)),
+                                );
+                              }
                             }
                           },
                           child: const Text(
