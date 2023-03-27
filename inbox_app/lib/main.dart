@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -117,69 +118,70 @@ class _StartScreenState extends State<StartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        body: Column(
-            mainAxisAlignment:
-                MainAxisAlignment.center, //Center Column contents vertically,
-            crossAxisAlignment: CrossAxisAlignment
-                .center, //Center Column contents horizontally,
-            children: [
-              const Center(
-                  child: Image(
-                image: AssetImage('assets/img/logo.png'),
-                width: 250,
-                height: 500,
+        backgroundColor: PRIMARY_BLACK,
+        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const SizedBox(height: 100),
+          Container(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: SvgPicture.asset(
+                'assets/img/splash_logo.svg',
+                height: 200,
               )),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(140, 50),
-                    backgroundColor: Colors.deepPurple,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15)))),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()),
-                  );
-                },
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
+          const SizedBox(height: 150),
+          Container(
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              children: [
+                ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(fixedSize: const Size(140, 50)),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
+                    );
+                  },
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Don\'t have an account yet?',
-                    style: TextStyle(fontSize: 17),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 17),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Don\'t have an account yet?',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RegisterScreen()),
-                      );
-                    },
-                    child: const Text(
-                      'Register',
-                      style: TextStyle(color: Colors.deepPurple),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 17),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const RegisterScreen()),
+                        );
+                      },
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(color: PRIMARY_GREEN),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ]));
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ]));
   }
 }
