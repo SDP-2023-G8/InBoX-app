@@ -132,8 +132,9 @@ class _DeliveryState extends State<Delivery> {
                   child: Column(children: [
                     Row(
                       children: [
-                        Text('Status: ', style: TextStyle(color: Colors.white)),
-                        SizedBox(width: 5.0),
+                        const Text('Status: ',
+                            style: TextStyle(color: Colors.white)),
+                        const SizedBox(width: 5.0),
                         Text(_delivered ? 'Delivered' : 'Waiting',
                             style: TextStyle(
                                 color:
@@ -144,8 +145,9 @@ class _DeliveryState extends State<Delivery> {
                     const SizedBox(height: 5.0),
                     Row(
                       children: [
-                        Text('Unit: ', style: TextStyle(color: Colors.white)),
-                        SizedBox(width: 5.0),
+                        const Text('Unit: ',
+                            style: TextStyle(color: Colors.white)),
+                        const SizedBox(width: 5.0),
                         Text(_unit,
                             style: TextStyle(
                                 color:

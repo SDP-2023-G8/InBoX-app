@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import '../pages/verify_code.dart';
 import 'input_validation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:inbox_app/components/delivery.dart';
 import 'package:inbox_app/constants/constants.dart';
 import 'package:http/http.dart' as http;
 

@@ -237,10 +237,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                               _passwordController.text) &&
                                           _passwordsMatch)
                                       ? PRIMARY_GREEN
-                                      : Colors.grey,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)))),
+                                      : Colors.grey),
                           onPressed: () async {
                             if (isEmailValid(_emailController.text) &&
                                 isPasswordValid(_passwordController.text) &&

@@ -8,7 +8,6 @@ import 'package:inbox_app/constants/constants.dart';
 import 'package:inbox_app/pages/live_video.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:http/http.dart' as http;
-import 'package:inbox_app/components/compartment.dart';
 import '../components/bars.dart';
 
 class UnitData {

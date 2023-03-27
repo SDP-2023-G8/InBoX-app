@@ -5,7 +5,6 @@ import 'package:inbox_app/pages/homepage.dart';
 import '../components/bars.dart';
 import '../components/pop_ups.dart';
 import '../constants/constants.dart';
-import 'register.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
