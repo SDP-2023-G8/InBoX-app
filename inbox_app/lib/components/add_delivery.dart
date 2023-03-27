@@ -107,8 +107,8 @@ class _AddDeliveryFromState extends State<AddDelivery> {
               ],
             ),
           ),
-        ],
-      ),
+        )
+      ],
     );
   }
 }
