@@ -237,7 +237,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                               _passwordController.text) &&
                                           _passwordsMatch)
                                       ? PRIMARY_GREEN
-                                      : Colors.grey),
+                                      : PRIMARY_GREY),
                           onPressed: () async {
                             if (isEmailValid(_emailController.text) &&
                                 isPasswordValid(_passwordController.text) &&
