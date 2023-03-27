@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
+import 'package:inbox_app/components/bars.dart';
 import 'package:inbox_app/constants/constants.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -93,11 +94,8 @@ class _LiveVideoScreenState extends State<LiveVideoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Live Feed"),
-          centerTitle: true,
-          backgroundColor: PRIMARY_BLACK,
-        ),
+        appBar: const BarWithBackArrow("Live Feed"),
+        backgroundColor: PRIMARY_BLACK,
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             _isRecording = !_isRecording;
@@ -108,7 +106,7 @@ class _LiveVideoScreenState extends State<LiveVideoScreen> {
               _stopListening();
             }
           },
-          backgroundColor: _isRecording ? PRIMARY_BLACK : PRIMARY_GREEN,
+          backgroundColor: _isRecording ? PRIMARY_GREY : PRIMARY_GREEN,
           child: _isRecording ? const Icon(Icons.stop) : const Icon(Icons.mic),
         ),
         body: Padding(

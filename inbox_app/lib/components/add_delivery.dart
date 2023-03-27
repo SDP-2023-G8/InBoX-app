@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:inbox_app/constants/constants.dart';
+import 'package:http/http.dart' as http;
 
 class AddDelivery extends StatefulWidget {
   const AddDelivery({super.key});
@@ -8,65 +13,98 @@ class AddDelivery extends StatefulWidget {
 }
 
 class _AddDeliveryFromState extends State<AddDelivery> {
+  String deliveryName = "";
+  String deliveryUnit = "";
+  String? apiKey = "";
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    loadApiKey();
+  }
+
+  Future<void> loadApiKey() async {
+    const storage = FlutterSecureStorage();
+    apiKey = await storage.read(key: "jwt");
+  }
 
   @override
   Widget build(BuildContext context) {
     DateTime currentDate = DateTime.now();
     DateTime lastDate =
         DateTime(currentDate.year + 1, currentDate.month, currentDate.day);
-
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
-      child: SimpleDialog(
-        title: const Text('Add Delivery'),
-        children: [
-          Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Column(
-                children: <Widget>[
-                  //DeliveryName
-                  TextFormField(
-                    decoration: const InputDecoration(
+    return SimpleDialog(
+      title: const Text('Add Delivery', style: TextStyle(color: Colors.white)),
+      backgroundColor: PRIMARY_BLACK,
+      children: [
+        Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: Column(
+              children: <Widget>[
+                //DeliveryName
+                TextFormField(
+                  onSaved: (String? value) {
+                    deliveryName = value!;
+                  },
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
                       labelText: 'Delivery Name',
-                    ),
-                    validator: (name) {
-                      if (name == null || name.isEmpty) {
-                        return 'Delivery name is required';
+                      labelStyle: TextStyle(color: Colors.white38)),
+                  validator: (name) {
+                    if (name == null || name.isEmpty) {
+                      return 'Delivery name is required';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+                    onSaved: (String? value) {
+                      deliveryUnit = value!;
+                    },
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                        labelText: 'InBoX Unit',
+                        labelStyle: TextStyle(color: Colors.white38)),
+                    validator: (unit) {
+                      if (unit == null || unit.isEmpty) {
+                        return "Unit Box name is required";
                       }
                       return null;
-                    },
-                  ),
-                  InputDatePickerFormField(
-                    keyboardType: TextInputType.datetime,
-                    lastDate: lastDate,
-                    firstDate: currentDate,
-                    errorInvalidText:
-                        'Please select a date within the next year',
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        //TODO: Send request to the database
-                        //On request being handled and confirmed, the delivery should be
-                        //created in deliveries_screen and getDeliveryData() called in delivery
+                    }),
+                const SizedBox(height: 10.0),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState?.save();
+                      var url =
+                          Uri.http(REST_ENDPOINT, '/api/v1/deliveries/create');
+                      Map data = {
+                        "email":
+                            "josue.fle.sanc@gmail.com", //TODO: change this to dynamic email
+                        "deliveryName": deliveryName,
+                        "unit": deliveryUnit,
+                        "hashCode":
+                            sha256.convert(utf8.encode(deliveryName)).toString()
+                      };
+                      http
+                          .post(url,
+                              headers: {
+                                'Content-Type': "application/json",
+                                'Authorization': "Bearer: $apiKey"
+                              },
+                              body: json.encode(data))
+                          .then((value) {
                         Navigator.of(context).pop();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Processing Data')),
-                        );
-                      }
-                    },
-                    child: const Text('Submit'),
-                  ),
-                ],
-              ),
+                      });
+                    }
+                  },
+                  child: const Text('Submit'),
+                ),
+              ],
             ),
           ),
         ],

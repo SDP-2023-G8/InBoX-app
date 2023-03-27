@@ -22,6 +22,8 @@ dependencies:
   mic_stream: ^0.6.4
   flutter_mjpeg: ^2.0.3
   intl: ^0.18.0
+  google_fonts: ^4.0.3
+  flutter_speed_dial: ^6.2.0
 
 
 dev_dependencies:

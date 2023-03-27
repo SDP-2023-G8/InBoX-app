@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+enum Status { free, occupied }
+
 class Compartment extends StatefulWidget {
   final int _id;
   const Compartment(this._id, {super.key});
