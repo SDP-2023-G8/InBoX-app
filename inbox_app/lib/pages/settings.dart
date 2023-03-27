@@ -4,6 +4,7 @@ import 'package:inbox_app/pages/forgot_password.dart';
 import 'package:inbox_app/pages/homepage.dart';
 import '../components/bars.dart';
 import '../components/pop_ups.dart';
+import '../constants/constants.dart';
 import 'register.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -14,7 +15,8 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final _emailAdress = 'ddd@gmail.com'; // TODO: get from server
+  final _emailAdress =
+      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadddddddddddddddddddd@gmail.com'; // TODO: get from server
   bool _unitStatus = true; // TODO: pull from server
 
   @override
@@ -39,7 +41,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           },
           child: Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.white,
+              backgroundColor: PRIMARY_BLACK,
               appBar: const SimpleBar('Settings'),
               bottomNavigationBar: const BottomBar(2),
               body: CustomScrollView(slivers: [
@@ -51,26 +53,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Column(
                         children: [
                           Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                              padding:
+                                  const EdgeInsets.fromLTRB(20, 30, 20, 15),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text('Email address:',
-                                        style: TextStyle(fontSize: 20)),
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20)),
                                     Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            _emailAdress,
-                                            style:
-                                                const TextStyle(fontSize: 17),
-                                          ),
-                                          TextButton(
-                                            style: TextButton.styleFrom(
-                                              textStyle:
-                                                  const TextStyle(fontSize: 17),
+                                          Container(
+                                            constraints: BoxConstraints.loose(
+                                                const Size.fromWidth(200)),
+                                            child: Text(
+                                              _emailAdress,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15),
+                                              textWidthBasis:
+                                                  TextWidthBasis.longestLine,
                                             ),
+                                          ),
+                                          ElevatedButton(
                                             onPressed: () {
                                               showDialog(
                                                   context: context,
@@ -78,26 +85,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                           context) =>
                                                       const ChangeEmailDialog());
                                             },
-                                            child: const Text(
-                                              'Change',
-                                              style: TextStyle(
-                                                  color: Colors.deepPurple),
-                                            ),
+                                            child: const Text('Change',
+                                                style: TextStyle(fontSize: 20)),
                                           )
                                         ])
                                   ])),
-                          const Divider(color: Colors.deepPurple, thickness: 1),
+                          const Divider(color: PRIMARY_GREY, thickness: 2),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text('Password (hidden)',
-                                    style: TextStyle(fontSize: 20)),
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    textStyle: const TextStyle(fontSize: 17),
-                                  ),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20)),
+                                ElevatedButton(
                                   onPressed: () {
                                     Navigator.push(
                                       context,
@@ -108,33 +110,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   },
                                   child: const Text(
                                     'Change',
-                                    style: TextStyle(color: Colors.deepPurple),
+                                    style: TextStyle(fontSize: 20),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const Divider(color: Colors.deepPurple, thickness: 1),
+                          const Divider(color: PRIMARY_GREY, thickness: 2),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10, left: 20, right: 20),
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 15),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text('Your InBoX "Name here"',
-                                    style: TextStyle(fontSize: 20)),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20)),
                                 Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                           'Status: ${_unitStatus ? 'active' : 'inactive'}',
-                                          style: const TextStyle(fontSize: 17)),
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          textStyle:
-                                              const TextStyle(fontSize: 17),
-                                        ),
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 17)),
+                                      ElevatedButton(
                                         onPressed: () {
                                           bool passwordCorrect = false;
                                           showDialog(
@@ -158,21 +158,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               ? 'Deactivate'
                                               : 'Activate',
                                           style: const TextStyle(
-                                              color: Colors.deepPurple),
+                                              color: Colors.white,
+                                              fontSize: 20),
                                         ),
                                       ),
                                     ]),
                               ],
                             ),
                           ),
-                          const Divider(color: Colors.deepPurple, thickness: 1),
+                          const Divider(color: PRIMARY_GREY, thickness: 2),
                           Container(
-                            padding: const EdgeInsets.only(left: 10, right: 20),
+                            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                             alignment: Alignment.centerLeft,
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                textStyle: const TextStyle(fontSize: 20),
-                              ),
+                            child: ElevatedButton(
                               onPressed: () {
                                 showDialog(
                                     context: context,
@@ -181,11 +179,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               },
                               child: const Text(
                                 'Delete Account',
-                                style: TextStyle(color: Colors.red),
+                                style:
+                                    TextStyle(color: PRIMARY_RED, fontSize: 20),
                               ),
                             ),
                           ),
-                          const Divider(color: Colors.deepPurple, thickness: 1),
+                          const Divider(color: PRIMARY_GREY, thickness: 2),
                         ],
                       ),
                       Container(
@@ -193,11 +192,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           alignment: Alignment.bottomCenter,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                fixedSize: const Size(140, 50),
-                                backgroundColor: Colors.deepPurple,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15)))),
+                                fixedSize: const Size(140, 50)),
                             onPressed: () {
                               // TODO: log the user out
                               Navigator.push(
