@@ -230,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SizedBox(
-                                      width: 100,
+                                      width: 110,
                                       child: TextField(
                                           controller: _titleController,
                                           decoration: const InputDecoration(

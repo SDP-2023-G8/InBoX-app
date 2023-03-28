@@ -116,35 +116,36 @@ class _BoxCompartmentState extends State<BoxCompartment> {
               )
             ],
           )),
-      Positioned(
-        top: 20,
-        left: 20,
-        child: Material(
-          type: MaterialType.transparency,
-          child: IconButton(
-            icon: const Icon(Icons.delete),
-            iconSize: 25,
-            color: Colors.white38,
-            splashColor: PRIMARY_RED,
-            onPressed: () {
-              var url = Uri.http(REST_ENDPOINT,
-                  'api/v1/units/compartment/${widget.unitName}/${widget.compartmentName}');
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      ConfirmCompartmentDeletionPopup(
-                          widget.compartmentName, url)).then((value) {
-                Navigator.of(context).pop();
-                Future.delayed(const Duration(seconds: 1));
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const HomeScreen()));
-              });
-            },
+      if (widget.free)
+        Positioned(
+          top: 20,
+          left: 20,
+          child: Material(
+            type: MaterialType.transparency,
+            child: IconButton(
+              icon: const Icon(Icons.delete),
+              iconSize: 25,
+              color: Colors.white38,
+              splashColor: PRIMARY_RED,
+              onPressed: () {
+                var url = Uri.http(REST_ENDPOINT,
+                    'api/v1/units/compartment/${widget.unitName}/${widget.compartmentName}');
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        ConfirmCompartmentDeletionPopup(
+                            widget.compartmentName, url)).then((value) {
+                  Navigator.of(context).pop();
+                  Future.delayed(const Duration(seconds: 1));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomeScreen()));
+                });
+              },
+            ),
           ),
         ),
-      ),
       Positioned(
           top: 25,
           right: 25,

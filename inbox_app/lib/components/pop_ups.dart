@@ -189,7 +189,10 @@ class DeliveryProofPopup extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Center(
-            child: Image.memory(Uint8List.fromList(base64.decode(imageData))),
+            child: imageData != ""
+                ? Image.memory(Uint8List.fromList(base64.decode(imageData)))
+                : const Text("No Delivery Proof Image Submitted",
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
           ),
         ],
       ),

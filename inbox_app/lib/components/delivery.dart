@@ -18,6 +18,7 @@ class DeliveryData {
   final bool scanned;
   final bool delivered;
   final String unit;
+  final String compartment;
   final String url;
 
   DeliveryData(
@@ -30,6 +31,7 @@ class DeliveryData {
       required this.scanned,
       required this.delivered,
       required this.unit,
+      required this.compartment,
       required this.url});
 
   factory DeliveryData.fromJson(Map<String, dynamic> json) {
@@ -43,6 +45,7 @@ class DeliveryData {
         scanned: json["scanned"],
         delivered: json["delivered"],
         unit: json["unit"],
+        compartment: json["compartment"],
         url: json["url"]);
   }
 }
@@ -150,7 +153,10 @@ class _DeliveryState extends State<Delivery> {
                         const Text('Unit: ',
                             style: TextStyle(color: Colors.white)),
                         const SizedBox(width: 5.0),
-                        Text(_unit,
+                        Text(
+                            widget.data.compartment != ""
+                                ? "$_unit (${widget.data.compartment})"
+                                : _unit,
                             style: TextStyle(
                                 color:
                                     _delivered ? PRIMARY_GREEN : PRIMARY_YELLOW,
