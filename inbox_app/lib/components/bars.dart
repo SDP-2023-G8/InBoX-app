@@ -159,7 +159,7 @@ class BottomBar extends StatelessWidget {
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               IconButton(
                   icon: Icon(
-                    Icons.list,
+                    Icons.window,
                     size: 45,
                     color: page == 0 ? PRIMARY_GREEN : PRIMARY_BLACK,
                   ),

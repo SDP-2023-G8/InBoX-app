@@ -10,6 +10,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:http/http.dart' as http;
 import 'package:inbox_app/components/compartment.dart';
 import '../components/bars.dart';
+import '../components/box_compartment.dart';
 
 class UnitData {
   final String name;
@@ -166,11 +167,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _socket.connect();
 
     loadingUnits = loadUnits();
-
-    // TODO: get states of the compartments from server
-    // for (int i = 1; i <= 4; i++) {
-    //   _compartments.add(Compartment(i));
-    // }
   }
 
   Future<bool> loadUnits() async {
@@ -202,7 +198,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: PRIMARY_BLACK,
-              appBar: const BarWithHelp('Your InBoX', 'How to use InBoX app?',
+              appBar: const BarWithHelp(
+                  'Your InBoX',
+                  'How to use InBoX app?',
                   'Each compartment has its status. It can be occupied if a delivery has been completed, '
                       'reserved for a future delivery or free. \n'
                       '1. Occupied: you can open the compartment by tapping the "Open" button.\n'
@@ -228,18 +226,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SizedBox(
-                                    width: 120,
-                                    child: TextField(
-                                        controller: _titleController,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w100,
-                                            fontSize: 30),
-                                        enabled: _titleEnabled),
-                                  ),
+                                      width: 100,
+                                      child: TextField(
+                                          controller: _titleController,
+                                          decoration: const InputDecoration(
+                                              disabledBorder: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              focusedBorder: InputBorder.none),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: _titleEnabled
+                                                  ? PRIMARY_GREEN
+                                                  : Colors.white,
+                                              fontSize: 24),
+                                          enabled: _titleEnabled)),
                                   IconButton(
                                       icon: const Icon(Icons.edit),
-                                      iconSize: 22,
+                                      iconSize: 20,
                                       color: Colors.white,
                                       onPressed: () {
                                         setState(() {
@@ -308,169 +311,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                             );
                                           }
 
-                                          final _compartmentNameController =
-                                              TextEditingController(
-                                                  text: _units[0]
-                                                      .compartments[i]
-                                                      .compartmentName);
-                                          bool _isCompartmentNameEnabled =
-                                              false;
-
-                                          return Stack(children: [
-                                            const Card(
-                                                elevation: 3,
-                                                color: PRIMARY_BLACK,
-                                                child: Center()),
-                                            Positioned(
-                                                bottom: 25,
-                                                left: 25,
-                                                width: 250,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: <Widget>[
-                                                        Row(
-                                                          children: [
-                                                            SizedBox(
-                                                                width: 120,
-                                                                child: TextField(
-                                                                    controller:
-                                                                        _compartmentNameController,
-                                                                    style: const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize:
-                                                                            18),
-                                                                    enabled:
-                                                                        _isCompartmentNameEnabled)),
-                                                            IconButton(
-                                                              icon: const Icon(
-                                                                  Icons.edit),
-                                                              iconSize: 15,
-                                                              color:
-                                                                  Colors.white,
-                                                              onPressed: () {
-                                                                setState(() {
-                                                                  _isCompartmentNameEnabled =
-                                                                      true;
-                                                                });
-                                                              },
-                                                            )
-                                                          ],
-                                                        ),
-                                                        Text(
-                                                            _units[0]
-                                                                    .compartments[
-                                                                        i]
-                                                                    .free
-                                                                ? "Compartment is Available!"
-                                                                : "Delivery '${_units[0].compartments[i].deliveryID}' Assigned",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w100,
-                                                                color: _units[0]
-                                                                        .compartments[
-                                                                            i]
-                                                                        .free
-                                                                    ? PRIMARY_GREEN
-                                                                    : PRIMARY_RED,
-                                                                fontSize: 13))
-                                                      ],
-                                                    ),
-                                                    Material(
-                                                      type: MaterialType
-                                                          .transparency,
-                                                      child: IconButton(
-                                                        icon: const Icon(
-                                                            Icons.lock_open),
-                                                        iconSize: 22,
-                                                        splashColor:
-                                                            PRIMARY_GREEN,
-                                                        color: Colors.white,
-                                                        onPressed: () {
-                                                          var snackBar =
-                                                              SnackBar(
-                                                            content: Text(
-                                                                "Unlocked '${_units[0].compartments[i].compartmentName}'!"),
-                                                            backgroundColor:
-                                                                PRIMARY_GREEN,
-                                                          );
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(
-                                                                  snackBar);
-                                                        },
-                                                      ),
-                                                    )
-                                                  ],
-                                                )),
-                                            Positioned(
-                                              top: 20,
-                                              left: 20,
-                                              child: Material(
-                                                type: MaterialType.transparency,
-                                                child: IconButton(
-                                                  icon:
-                                                      const Icon(Icons.delete),
-                                                  iconSize: 25,
-                                                  color: Colors.white38,
-                                                  splashColor: PRIMARY_RED,
-                                                  onPressed: () {
-                                                    var url = Uri.http(
-                                                        REST_ENDPOINT,
-                                                        'api/v1/units/compartment/${_units[0].name}/${_units[0].compartments[i].compartmentName}');
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                                context) =>
-                                                            ConfirmCompartmentDeletionPopup(
-                                                                _units[0]
-                                                                    .compartments[
-                                                                        i]
-                                                                    .compartmentName,
-                                                                url)).then(
-                                                        (value) {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Future.delayed(
-                                                          const Duration(
-                                                              seconds: 1));
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const HomeScreen()));
-                                                    });
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                            Positioned(
-                                                top: 25,
-                                                right: 25,
-                                                child: Container(
-                                                  height: 25.0,
-                                                  width: 25.0,
-                                                  decoration: BoxDecoration(
-                                                    color: _units[0]
-                                                            .compartments[i]
-                                                            .free
-                                                        ? PRIMARY_GREEN
-                                                        : PRIMARY_RED,
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                ))
-                                          ]);
+                                          return BoxCompartment(
+                                              _units[0].name,
+                                              _units[0]
+                                                  .compartments[i]
+                                                  .compartmentName,
+                                              _units[0]
+                                                  .compartments[i]
+                                                  .deliveryID,
+                                              _units[0].compartments[i].free);
                                         }),
                                   ),
                                 )),
