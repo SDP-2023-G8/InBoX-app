@@ -16,6 +16,7 @@ class _AddDeliveryFromState extends State<AddDelivery> {
   String deliveryName = "";
   String deliveryUnit = "";
   String? apiKey = "";
+  String? userEmail = "";
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -27,6 +28,7 @@ class _AddDeliveryFromState extends State<AddDelivery> {
   Future<void> loadApiKey() async {
     const storage = FlutterSecureStorage();
     apiKey = await storage.read(key: "jwt");
+    userEmail = await storage.read(key: "email");
   }
 
   @override
@@ -83,8 +85,7 @@ class _AddDeliveryFromState extends State<AddDelivery> {
                       var url =
                           Uri.http(REST_ENDPOINT, '/api/v1/deliveries/create');
                       Map data = {
-                        "email":
-                            "josue.fle.sanc@gmail.com", //TODO: change this to dynamic email
+                        "email": userEmail,
                         "deliveryName": deliveryName,
                         "unit": deliveryUnit,
                         "hashCode":

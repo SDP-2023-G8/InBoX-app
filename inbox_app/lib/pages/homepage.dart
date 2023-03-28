@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -15,12 +14,14 @@ class UnitData {
   final String name;
   final String ownerEmail;
   final String boxID;
+  final bool active;
   final List<CompartmentData> compartments;
 
   UnitData(
       {required this.name,
       required this.ownerEmail,
       required this.boxID,
+      required this.active,
       required this.compartments});
 
   factory UnitData.fromJson(Map<String, dynamic> json) {
@@ -28,6 +29,7 @@ class UnitData {
         name: json["name"],
         ownerEmail: json["ownerEmail"],
         boxID: json["boxID"],
+        active: json["active"],
         compartments: (json["compartments"] as List)
             .map((data) => CompartmentData.fromJson(data))
             .toList());
@@ -67,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var loadingUnits;
   String? apiKey = "";
+  String? userEmail = "";
   int _index = 0;
   List<UnitData> _units = [];
 
@@ -171,8 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<bool> loadUnits() async {
     const storage = FlutterSecureStorage();
     apiKey = await storage.read(key: "jwt");
+    userEmail = await storage.read(key: "email");
 
-    var url = Uri.http(REST_ENDPOINT, '/api/v1/units/josue.fle.sanc@gmail.com');
+    var url = Uri.http(REST_ENDPOINT, '/api/v1/units/$userEmail');
     var response =
         await http.get(url, headers: {'Authorization': "Bearer: $apiKey"});
     Iterable l = json.decode(response.body);

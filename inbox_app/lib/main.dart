@@ -122,7 +122,7 @@ class _StartScreenState extends State<StartScreen> {
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           const SizedBox(height: 100),
           Container(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 50, right: 50),
               child: SvgPicture.asset(
                 'assets/img/splash_logo.svg',
                 height: 200,

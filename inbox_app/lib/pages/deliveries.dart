@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:http/http.dart' as http;
 import 'package:inbox_app/components/add_delivery.dart';
@@ -21,6 +22,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
     'autoConnect': false,
     'transports': ['websocket'],
   });
+  String? userEmail;
   List<Delivery> _deliveries = <Delivery>[];
 
   @override
@@ -32,9 +34,10 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
   Future<bool> loadDeliveries() async {
     _deliveries = [];
 
-    //TODO: Change my email to a dynamically loaded user email
-    var url =
-        Uri.http(REST_ENDPOINT, '/api/v1/deliveries/josue.fle.sanc@gmail.com');
+    const storage = FlutterSecureStorage();
+    userEmail = await storage.read(key: "email");
+
+    var url = Uri.http(REST_ENDPOINT, '/api/v1/deliveries/$userEmail');
     var response = await http.get(url);
     Iterable l = json.decode(response.body);
     List<DeliveryData> deliveryDataObjects =

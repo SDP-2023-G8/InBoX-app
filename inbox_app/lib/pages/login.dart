@@ -143,6 +143,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     key: "jwt",
                                     value: json.decode(response.body)["token"]);
 
+                                storage.write(
+                                    key: "email", value: _emailController.text);
+
                                 callSetStateDetailsCorrect(true);
                                 Navigator.push(
                                   context,

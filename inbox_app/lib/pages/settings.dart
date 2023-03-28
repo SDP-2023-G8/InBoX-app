@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inbox_app/main.dart';
 import 'package:inbox_app/pages/forgot_password.dart';
 import 'package:inbox_app/pages/homepage.dart';
+import 'package:http/http.dart' as http;
 import '../components/bars.dart';
 import '../components/pop_ups.dart';
 import '../constants/constants.dart';
@@ -14,13 +17,31 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final _emailAdress =
-      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadddddddddddddddddddd@gmail.com'; // TODO: get from server
-  bool _unitStatus = true; // TODO: pull from server
+  String? _emailAddress = "";
+  String? _apiKey = "";
+  String _unitName = "";
+  bool _unitStatus = false;
+  List<UnitData> _units = [];
 
   @override
   void initState() {
+    readStorage();
     super.initState();
+  }
+
+  Future<void> readStorage() async {
+    const storage = FlutterSecureStorage();
+    _apiKey = await storage.read(key: "jwt");
+    _emailAddress = await storage.read(key: "email");
+
+    var url = Uri.http(REST_ENDPOINT, '/api/v1/units/$_emailAddress');
+    var response =
+        await http.get(url, headers: {'Authorization': "Bearer: $_apiKey"});
+    Iterable l = json.decode(response.body);
+    _units = (l as List).map((data) => UnitData.fromJson(data)).toList();
+    _unitStatus = _units[0].active;
+    _unitName = _units[0].name;
+    setState(() {});
   }
 
   @override
@@ -59,7 +80,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   children: [
                                     const Text('Email address:',
                                         style: TextStyle(
-                                            color: Colors.white, fontSize: 20)),
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 20)),
                                     Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -68,7 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                             constraints: BoxConstraints.loose(
                                                 const Size.fromWidth(200)),
                                             child: Text(
-                                              _emailAdress,
+                                              _emailAddress!,
                                               style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15),
@@ -85,7 +108,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                       const ChangeEmailDialog());
                                             },
                                             child: const Text('Change',
-                                                style: TextStyle(fontSize: 20)),
+                                                style: TextStyle(fontSize: 17)),
                                           )
                                         ])
                                   ])),
@@ -97,7 +120,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               children: [
                                 const Text('Password (hidden)',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 20)),
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                    )),
                                 ElevatedButton(
                                   onPressed: () {
                                     Navigator.push(
@@ -109,7 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   },
                                   child: const Text(
                                     'Change',
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 17),
                                   ),
                                 ),
                               ],
@@ -121,9 +147,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Your InBoX "Name here"',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20)),
+                                Text('Your InBoX "$_unitName"',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                    )),
                                 Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -143,14 +172,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                       _unitStatus
                                                           ? 'Deactivate'
                                                           : 'Activate'));
-                                          if (false)
-                                            passwordCorrect =
-                                                true; // TODO: check password and update passwordCorrect
-                                          if (passwordCorrect)
+
+                                          passwordCorrect =
+                                              true; // TODO: check password and update passwordCorrect
+                                          if (passwordCorrect) {
                                             setState(() {
                                               _unitStatus = !_unitStatus;
                                             });
-                                          // TODO: (de)activate the unit
+                                          }
+
+                                          var url = Uri.http(REST_ENDPOINT,
+                                              "api/v1/units/status/$_unitName");
+                                          Map payload = {
+                                            "active": !_unitStatus
+                                          };
+                                          http.post(url, body: payload);
+                                          setState(() {
+                                            _unitStatus = !_unitStatus;
+                                          });
                                         },
                                         child: Text(
                                           _unitStatus
@@ -158,7 +197,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               : 'Activate',
                                           style: const TextStyle(
                                               color: Colors.white,
-                                              fontSize: 20),
+                                              fontSize: 17),
                                         ),
                                       ),
                                     ]),
@@ -168,7 +207,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           const Divider(color: PRIMARY_GREY, thickness: 2),
                           Container(
                             padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                            alignment: Alignment.centerLeft,
+                            alignment: Alignment.center,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: PRIMARY_RED),
@@ -181,7 +220,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               child: const Text(
                                 'Delete Account',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
+                                    color: Colors.white, fontSize: 17),
                               ),
                             ),
                           ),
@@ -193,9 +232,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           alignment: Alignment.bottomCenter,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                fixedSize: const Size(140, 50)),
+                                fixedSize: const Size(120, 40)),
                             onPressed: () {
-                              // TODO: log the user out
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -205,7 +243,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             child: const Text(
                               'Logout',
                               style: TextStyle(
-                                fontSize: 30,
+                                fontSize: 25,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white,
                               ),
