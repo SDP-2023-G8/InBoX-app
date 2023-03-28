@@ -2,6 +2,7 @@
     package="com.example.inbox_app">
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permissions.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
    <application
         android:label="inbox_app"
         android:name="${applicationName}"

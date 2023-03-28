@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -7,8 +8,10 @@ import 'package:inbox_app/constants/constants.dart';
 import 'package:inbox_app/pages/live_video.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 import '../components/bars.dart';
 import '../components/box_compartment.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class UnitData {
   final String name;
@@ -71,11 +74,28 @@ class _HomeScreenState extends State<HomeScreen> {
   String? apiKey = "";
   String? userEmail = "";
   int _index = 0;
+  bool sentCreateUnitRequest = false;
+  bool showScanner = false;
   List<UnitData> _units = [];
 
   final TextEditingController _titleController =
       TextEditingController(text: "Loading...");
   bool _titleEnabled = false;
+
+  Barcode? result;
+  QRViewController? controller;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  // In order to get hot reload to work we need to pause the camera if the platform
+  // is android, or resume the camera if the platform is iOS.
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (Platform.isAndroid) {
+      controller!.pauseCamera();
+    }
+    controller!.resumeCamera();
+  }
 
   Widget _getFAB() {
     return SpeedDial(
@@ -187,6 +207,64 @@ class _HomeScreenState extends State<HomeScreen> {
     return true;
   }
 
+  Widget _buildQrView(BuildContext context) {
+    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
+    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+            MediaQuery.of(context).size.height < 400)
+        ? 150.0
+        : 300.0;
+    // To ensure the Scanner view is properly sizes after rotation
+    // we need to listen for Flutter SizeChanged notification and update controller
+    return QRView(
+      key: qrKey,
+      onQRViewCreated: _onQRViewCreated,
+      overlay: QrScannerOverlayShape(
+          borderColor: PRIMARY_GREEN,
+          borderRadius: 10,
+          borderLength: 30,
+          borderWidth: 10,
+          cutOutSize: scanArea),
+      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+    );
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    setState(() {
+      this.controller = controller;
+    });
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        result = scanData;
+        createUnit(result!.code!);
+      });
+    });
+  }
+
+  void createUnit(String boxID) async {
+    if (!sentCreateUnitRequest) {
+      var url = Uri.http(REST_ENDPOINT, "api/v1/units/create");
+      Map payload = {"name": "InBoX", "email": userEmail, "id": boxID};
+      await http.post(url,
+          headers: {"Content-Type": "application/json"},
+          body: json.encode(payload));
+      setState(() {
+        sentCreateUnitRequest = true;
+      });
+
+      loadUnits().then((value) {
+        setState(() {});
+      });
+    }
+  }
+
+  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+    if (!p) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('no Permission')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -222,6 +300,30 @@ class _HomeScreenState extends State<HomeScreen> {
                           return const CircularProgressIndicator();
                         }
 
+                        if (_units.isEmpty) {
+                          return Container(
+                            color: PRIMARY_GREEN,
+                            padding: showScanner
+                                ? const EdgeInsets.all(20)
+                                : const EdgeInsets.all(40),
+                            child: showScanner
+                                ? _buildQrView(context)
+                                : IconButton(
+                                    icon: const Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                    ),
+                                    padding: const EdgeInsets.all(40),
+                                    iconSize: 40,
+                                    splashColor: Colors.white,
+                                    onPressed: () {
+                                      setState(() {
+                                        showScanner = true;
+                                      });
+                                    }),
+                          );
+                        }
+
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -245,13 +347,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                               fontSize: 24),
                                           enabled: _titleEnabled)),
                                   IconButton(
-                                      icon: const Icon(Icons.edit),
+                                      icon: _titleEnabled
+                                          ? const Icon(Icons.check)
+                                          : const Icon(Icons.edit),
                                       iconSize: 20,
                                       color: Colors.white,
-                                      onPressed: () {
-                                        setState(() {
-                                          _titleEnabled = true;
-                                        });
+                                      onPressed: () async {
+                                        if (_titleEnabled) {
+                                          var url = Uri.http(REST_ENDPOINT,
+                                              "/api/v1/units/rename");
+                                          Map payload = {
+                                            "boxID": _units[0].boxID,
+                                            "name": _titleController.text
+                                          };
+                                          await http.post(url,
+                                              headers: {
+                                                "Content-Type":
+                                                    "application/json"
+                                              },
+                                              body: json.encode(payload));
+
+                                          setState(() {
+                                            _titleEnabled = false;
+                                          });
+                                        } else {
+                                          setState(() {
+                                            _titleEnabled = true;
+                                          });
+                                        }
                                       })
                                 ]),
                             const SizedBox(height: 10.0),
