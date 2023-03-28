@@ -47,7 +47,8 @@ class BarWithBackArrow extends StatelessWidget implements PreferredSizeWidget {
         onPressed: () => Navigator.of(context).pop(),
       ),
       title: Text(titleText),
-      titleTextStyle: const TextStyle(fontSize: 30, letterSpacing: 0.5),
+      titleTextStyle: const TextStyle(
+          fontSize: 30, letterSpacing: 0.5, fontWeight: FontWeight.bold),
       centerTitle: true,
     );
   }
@@ -69,9 +70,9 @@ class BarWithHelp extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         backgroundColor: PRIMARY_GREEN,
         automaticallyImplyLeading: false,
-        title: Text(titleText,
-            style: const TextStyle(fontWeight: FontWeight.bold)),
-        titleTextStyle: const TextStyle(fontSize: 30, letterSpacing: 0.5),
+        title: Text(titleText),
+        titleTextStyle: const TextStyle(
+            fontSize: 30, letterSpacing: 0.5, fontWeight: FontWeight.bold),
         centerTitle: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))),
@@ -110,7 +111,7 @@ class BarWithHelpAndBackArrow extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        backgroundColor: PRIMARY_BLACK,
+        backgroundColor: PRIMARY_GREEN,
         leading: IconButton(
           icon: const Icon(
             Icons.keyboard_arrow_left,

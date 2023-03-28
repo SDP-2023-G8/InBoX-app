@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: Scaffold(
             resizeToAvoidBottomInset: false,
-            backgroundColor: Colors.white,
+            backgroundColor: PRIMARY_BLACK,
             appBar: const BarWithBackArrow('Login'),
             body: CustomScrollView(slivers: [
               SliverFillRemaining(
@@ -61,19 +61,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 100),
                       TextFormField(
                         controller: _emailController,
-                        cursorColor: Colors.deepPurple,
-                        style: const TextStyle(fontSize: 18),
+                        cursorColor: PRIMARY_GREEN,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18),
                         decoration: const InputDecoration(
                           labelText: 'Email',
                           labelStyle:
-                              TextStyle(color: Colors.deepPurple, fontSize: 24),
+                              TextStyle(color: PRIMARY_GREEN, fontSize: 24),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           hintText: 'Enter your email',
                           hintStyle:
                               TextStyle(fontSize: 18, color: Colors.grey),
                           focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.deepPurple)),
-                          border: OutlineInputBorder(),
+                              borderSide: BorderSide(color: PRIMARY_GREEN)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: PRIMARY_GREY)),
                         ),
                         onChanged: (_) => callSetStateDetailsCorrect(true),
                       ),
@@ -81,22 +83,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _isObscure,
-                        cursorColor: Colors.deepPurple,
-                        style: const TextStyle(fontSize: 18),
+                        cursorColor: PRIMARY_GREEN,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18),
                         decoration: InputDecoration(
                             labelText: 'Password',
                             labelStyle: const TextStyle(
-                                color: Colors.deepPurple, fontSize: 24),
+                                color: PRIMARY_GREEN, fontSize: 24),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             hintText: 'Enter your password',
                             hintStyle: const TextStyle(
                                 fontSize: 18, color: Colors.grey),
                             focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.deepPurple)),
-                            border: const OutlineInputBorder(),
+                                borderSide: BorderSide(color: PRIMARY_GREEN)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: PRIMARY_GREY)),
                             suffixIcon: IconButton(
-                              color: Colors.deepPurple,
+                              color: PRIMARY_GREEN,
                               icon: Icon(_isObscure
                                   ? Icons.visibility
                                   : Icons.visibility_off),
@@ -112,40 +115,43 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(
                               fontSize: 17,
                               color: _areDetailsCorrect
-                                  ? Colors.green
-                                  : Colors.red)),
+                                  ? PRIMARY_GREEN
+                                  : PRIMARY_RED)),
                       const SizedBox(height: 20),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               fixedSize: const Size(120, 50),
-                              backgroundColor: Colors.deepPurple,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)))),
+                              backgroundColor: PRIMARY_GREEN),
                           onPressed: () async {
-                            var url =
-                                Uri.http(REST_ENDPOINT, '/api/v1/users/login');
-                            Map data = {
-                              "email": _emailController.text,
-                              "password": _passwordController.text
-                            };
-                            var response = await http.post(url,
-                                headers: {"Content-Type": "application/json"},
-                                body: json.encode(data));
+                            if (_emailController.text.isNotEmpty &&
+                                _passwordController.text.length >= 8) {
+                              var url = Uri.http(
+                                  REST_ENDPOINT, '/api/v1/users/login');
+                              Map data = {
+                                "email": _emailController.text,
+                                "password": _passwordController.text
+                              };
+                              var response = await http.post(url,
+                                  headers: {"Content-Type": "application/json"},
+                                  body: json.encode(data));
 
-                            if (response.statusCode == 201 && context.mounted) {
-                              // Save new token
-                              const storage = FlutterSecureStorage();
-                              storage.write(
-                                  key: "jwt",
-                                  value: json.decode(response.body)["token"]);
+                              if (response.statusCode == 201 &&
+                                  context.mounted) {
+                                // Save new token
+                                const storage = FlutterSecureStorage();
+                                storage.write(
+                                    key: "jwt",
+                                    value: json.decode(response.body)["token"]);
 
-                              callSetStateDetailsCorrect(true);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()),
-                              );
+                                callSetStateDetailsCorrect(true);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeScreen()),
+                                );
+                              } else {
+                                callSetStateDetailsCorrect(false);
+                              }
                             } else {
                               callSetStateDetailsCorrect(false);
                             }
@@ -168,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: const Text(
                           'Forgot your password?',
-                          style: TextStyle(color: Colors.deepPurple),
+                          style: TextStyle(color: PRIMARY_GREEN),
                         ),
                       )
                     ],

@@ -8,7 +8,6 @@ import 'package:inbox_app/constants/constants.dart';
 import 'package:inbox_app/pages/live_video.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:http/http.dart' as http;
-import 'package:inbox_app/components/compartment.dart';
 import '../components/bars.dart';
 import '../components/box_compartment.dart';
 
@@ -205,7 +204,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       'reserved for a future delivery or free. \n'
                       '1. Occupied: you can open the compartment by tapping the "Open" button.\n'
                       '2. Reserved: you can view and/or change the details of a future delivery by tapping the "View Delivery" button.\n'
-                      '3. Free: you can assign the compartment to a delivery by tapping the "Add Delivery" button, then it will become reserved'),
+                      '3. Free: you can assign the compartment to a delivery by tapping the "Add Delivery" button, then it will become reserved.\n'
+                      'To move between compartments, swipe left or right.'),
               floatingActionButton: _getFAB(),
               bottomNavigationBar: const BottomBar(1),
               body: Padding(
