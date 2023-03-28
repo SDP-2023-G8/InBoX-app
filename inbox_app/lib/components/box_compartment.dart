@@ -7,11 +7,11 @@ import 'pop_ups.dart';
 class BoxCompartment extends StatefulWidget {
   final String unitName;
   final String compartmentName;
-  final String deliveryID;
+  final String deliveryName;
   final bool free;
 
   const BoxCompartment(
-      this.unitName, this.compartmentName, this.deliveryID, this.free,
+      this.unitName, this.compartmentName, this.deliveryName, this.free,
       {super.key});
 
   @override
@@ -91,7 +91,7 @@ class _BoxCompartmentState extends State<BoxCompartment> {
                   Text(
                       widget.free
                           ? "Compartment is Available!"
-                          : "Delivery '${widget.deliveryID}' Assigned",
+                          : "Delivery '${widget.deliveryName}' Assigned",
                       style: TextStyle(
                           fontWeight: FontWeight.w100,
                           color: widget.free ? PRIMARY_GREEN : PRIMARY_RED,

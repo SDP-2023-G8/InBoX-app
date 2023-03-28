@@ -42,18 +42,18 @@ class UnitData {
 class CompartmentData {
   final String compartmentName;
   final bool free;
-  final String deliveryID;
+  final String deliveryName;
 
   CompartmentData(
       {required this.compartmentName,
       required this.free,
-      required this.deliveryID});
+      required this.deliveryName});
 
   factory CompartmentData.fromJson(Map<String, dynamic> json) {
     return CompartmentData(
         compartmentName: json["compartmentName"],
         free: json["free"],
-        deliveryID: json["deliveryID"]);
+        deliveryName: json["deliveryName"]);
   }
 }
 
@@ -445,7 +445,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .compartmentName,
                                               _units[0]
                                                   .compartments[i]
-                                                  .deliveryID,
+                                                  .deliveryName,
                                               _units[0].compartments[i].free);
                                         }),
                                   ),

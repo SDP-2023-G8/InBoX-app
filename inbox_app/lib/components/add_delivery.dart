@@ -183,6 +183,20 @@ class _AddDeliveryFromState extends State<AddDelivery> {
                           .then((value) {
                         Navigator.of(context).pop();
                       });
+
+                      // If delivery assigned to compartment, send POST request
+                      if (compartmentUnit != "") {
+                        var url = Uri.http(
+                            REST_ENDPOINT, "api/v1/units/compartment/delivery");
+                        Map payload = {
+                          "unit": deliveryUnit,
+                          "compartment": compartmentUnit,
+                          "deliveryName": deliveryName
+                        };
+                        http.post(url,
+                            headers: {'Content-Type': "application/json"},
+                            body: json.encode(payload));
+                      }
                     }
                   },
                   child: const Text('Submit'),
