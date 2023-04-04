@@ -72,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
         },
         child: Scaffold(
-            resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: true,
             backgroundColor: PRIMARY_BLACK,
             appBar: const BarWithHelpAndBackArrow(
                 'Register',

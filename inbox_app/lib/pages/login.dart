@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         },
         child: Scaffold(
-            resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: true,
             backgroundColor: PRIMARY_BLACK,
             appBar: const BarWithBackArrow('Login'),
             body: CustomScrollView(slivers: [
