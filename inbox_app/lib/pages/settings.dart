@@ -141,69 +141,73 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ],
                             ),
                           ),
-                          const Divider(color: PRIMARY_GREY, thickness: 2),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Your InBoX "$_unitName"',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                    )),
-                                Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                          'Status: ${_unitStatus ? 'active' : 'inactive'}',
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 17)),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          bool passwordCorrect = false;
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) =>
-                                                  VerifyWithPasswordDialog(
-                                                      _unitStatus
-                                                          ? 'Deactivate'
-                                                          : 'Activate'));
+                          if (_units.isNotEmpty)
+                            const Divider(color: PRIMARY_GREY, thickness: 2),
+                          if (_units.isNotEmpty)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(20, 20, 20, 15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Your InBoX "$_unitName"',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700,
+                                      )),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                            'Status: ${_unitStatus ? 'active' : 'inactive'}',
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17)),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            bool passwordCorrect = false;
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    VerifyWithPasswordDialog(
+                                                        _unitStatus
+                                                            ? 'Deactivate'
+                                                            : 'Activate'));
 
-                                          passwordCorrect =
-                                              true; // TODO: check password and update passwordCorrect
-                                          if (passwordCorrect) {
+                                            passwordCorrect =
+                                                true; // TODO: check password and update passwordCorrect
+                                            if (passwordCorrect) {
+                                              setState(() {
+                                                _unitStatus = !_unitStatus;
+                                              });
+                                            }
+
+                                            var url = Uri.http(REST_ENDPOINT,
+                                                "api/v1/units/status/$_unitName");
+                                            Map payload = {
+                                              "active": !_unitStatus
+                                            };
+                                            http.post(url, body: payload);
                                             setState(() {
                                               _unitStatus = !_unitStatus;
                                             });
-                                          }
-
-                                          var url = Uri.http(REST_ENDPOINT,
-                                              "api/v1/units/status/$_unitName");
-                                          Map payload = {
-                                            "active": !_unitStatus
-                                          };
-                                          http.post(url, body: payload);
-                                          setState(() {
-                                            _unitStatus = !_unitStatus;
-                                          });
-                                        },
-                                        child: Text(
-                                          _unitStatus
-                                              ? 'Deactivate'
-                                              : 'Activate',
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 17),
+                                          },
+                                          child: Text(
+                                            _unitStatus
+                                                ? 'Deactivate'
+                                                : 'Activate',
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17),
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                              ],
+                                      ]),
+                                ],
+                              ),
                             ),
-                          ),
                           const Divider(color: PRIMARY_GREY, thickness: 2),
                           Container(
                             padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
