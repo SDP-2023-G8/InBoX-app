@@ -86,7 +86,9 @@ class _AddDeliveryFromState extends State<AddDelivery> {
                       }).toList(),
                       icon: const Icon(Icons.keyboard_arrow_down),
                       hint: const Text("InBoX Unit",
-                          style: TextStyle(fontWeight: FontWeight.w600)),
+                          style: TextStyle(
+                              color: Colors.white38,
+                              fontWeight: FontWeight.w600)),
                       style: const TextStyle(color: Colors.white),
                       underline: Container(
                         height: 1,
@@ -112,9 +114,11 @@ class _AddDeliveryFromState extends State<AddDelivery> {
                       value: deliverToCompartment,
                       activeColor: PRIMARY_GREEN,
                       onChanged: (value) {
-                        setState(() {
-                          deliverToCompartment = value;
-                        });
+                        if (_units.isNotEmpty) {
+                          setState(() {
+                            deliverToCompartment = value;
+                          });
+                        }
                       },
                     ),
                   ],
@@ -137,7 +141,9 @@ class _AddDeliveryFromState extends State<AddDelivery> {
                         }).toList(),
                         icon: const Icon(Icons.keyboard_arrow_down),
                         hint: const Text("InBoX Unit",
-                            style: TextStyle(fontWeight: FontWeight.w600)),
+                            style: TextStyle(
+                                color: Colors.white38,
+                                fontWeight: FontWeight.w600)),
                         style: const TextStyle(color: Colors.white),
                         underline: Container(
                           height: 1,
